@@ -39,7 +39,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenSameTitles_WhenCheckEquality_thenReturnTrue() {
+    public void givenSameTitles_whenCheckEquality_thenReturnTrue() {
         //given
         Category category1 = new Category(Title.valueOf("Category 1"));
         Category category2 = new Category(Title.valueOf("Category 1"));
@@ -52,7 +52,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenSameTitlesAndSameParents_WhenCheckEquality_thenReturnTrue() {
+    public void givenSameTitlesAndSameParents_whenCheckEquality_thenReturnTrue() {
         //given
         Category parent = new Category(Title.valueOf("Parent Category"));
         Category category1 = new Category(parent, Title.valueOf("Category 1"));
@@ -66,7 +66,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenDifferentTitles_WhenCheckEquality_thenReturnFalse() {
+    public void givenDifferentTitles_whenCheckEquality_thenReturnFalse() {
         //given
         Category category1 = new Category(Title.valueOf("Category 1"));
         Category category2 = new Category(Title.valueOf("Category 2"));
@@ -79,7 +79,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenDifferentTitlesAndSameParents_WhenCheckEquality_thenReturnFalse() {
+    public void givenDifferentTitlesAndSameParents_whenCheckEquality_thenReturnFalse() {
         //given
         Category parent = new Category(Title.valueOf("Parent Category"));
         Category category1 = new Category(parent, Title.valueOf("Category 1"));
@@ -93,7 +93,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenDifferentTitlesAndDifferentParents_WhenCheckEquality_thenReturnFalse() {
+    public void givenDifferentTitlesAndDifferentParents_whenCheckEquality_thenReturnFalse() {
         //given
         Category parent1 = new Category(Title.valueOf("Parent Category 1"));
         Category parent2 = new Category(Title.valueOf("Parent Category 2"));
@@ -108,7 +108,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenSameTitlesAndDifferentParents_WhenCheckEquality_thenReturnFalse() {
+    public void givenSameTitlesAndDifferentParents_whenCheckEquality_thenReturnFalse() {
         //given
         Category parent1 = new Category(Title.valueOf("Parent Category 1"));
         Category parent2 = new Category(Title.valueOf("Parent Category 2"));
@@ -123,7 +123,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenCategory1DeeperThanCategory2_WhenCompareCategories_thenReturnPositive() {
+    public void givenCategory1DeeperThanCategory2_whenCompareCategories_thenReturnPositive() {
         //given
         Category parent1 = new Category(Title.valueOf("Parent Category 1"));
         Category category1 = new Category(parent1, Title.valueOf("Category 1"));
@@ -137,7 +137,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenCategory1ShallowerThanCategory2_WhenCompareCategories_thenReturnNegative() {
+    public void givenCategory1ShallowerThanCategory2_whenCompareCategories_thenReturnNegative() {
         //given
         Category parent2 = new Category(Title.valueOf("Parent Category 2"));
         Category category1 = new Category(Title.valueOf("Category 1"));
@@ -151,7 +151,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenSameDepthSameParentAndCategory1TitleLesserThanCategory2Title_WhenCompareCategories_thenReturnNegative() {
+    public void givenSameDepthSameParentAndCategory1TitleLesserThanCategory2Title_whenCompareCategories_thenReturnNegative() {
         //given
         Category parent = new Category(Title.valueOf("Parent Category"));
         Category category1 = new Category(parent, Title.valueOf("Category 1"));
@@ -165,7 +165,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenSameDepthParent1TitleLesserThanParent2TitleAndCategory1TitleLesserThanCategory2Title_WhenCompareCategories_thenReturnNegative() {
+    public void givenSameDepthParent1TitleLesserThanParent2TitleAndCategory1TitleLesserThanCategory2Title_whenCompareCategories_thenReturnNegative() {
         //given
         Category parent1 = new Category(Title.valueOf("Parent Category 1"));
         Category parent2 = new Category(Title.valueOf("Parent Category 2"));
@@ -180,7 +180,7 @@ public class CategoryTest {
     }
 
     @Test
-    public void givenSameDepthParent1TitleLesserThanParent2TitleAndCategoryTitlesSame_WhenCompareCategories_thenReturnNegative() {
+    public void givenSameDepthParent1TitleLesserThanParent2TitleAndCategoryTitlesSame_whenCompareCategories_thenReturnNegative() {
         //given
         Category parent1 = new Category(Title.valueOf("Parent Category 1"));
         Category parent2 = new Category(Title.valueOf("Parent Category 2"));

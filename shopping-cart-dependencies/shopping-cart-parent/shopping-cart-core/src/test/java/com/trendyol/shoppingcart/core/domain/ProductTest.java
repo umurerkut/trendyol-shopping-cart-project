@@ -74,7 +74,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenValidTitleAndPriceAndCategory_whenCreateCategory_thenReturnCategory() {
+    public void givenValidTitleAndPriceAndCategory_whenCreateProduct_thenReturnProduct() {
         //given
         Title title = Title.valueOf("Product");
         Amount price = Amount.valueOf(10D);
@@ -91,7 +91,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSameTitlesDifferentPricesDifferentCategories_WhenCheckEquality_thenReturnFalse() {
+    public void givenSameTitlesDifferentPricesDifferentCategories_whenCheckEquality_thenReturnFalse() {
         //given
         Title title1 = Title.valueOf("Product");
         Title title2 = Title.valueOf("Product");
@@ -110,7 +110,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenDifferentTitlesSamePricesDifferentCategories_WhenCheckEquality_thenReturnFalse() {
+    public void givenDifferentTitlesSamePricesDifferentCategories_whenCheckEquality_thenReturnFalse() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 2");
@@ -129,7 +129,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenDifferentTitlesDifferentPricesSameCategories_WhenCheckEquality_thenReturnFalse() {
+    public void givenDifferentTitlesDifferentPricesSameCategories_whenCheckEquality_thenReturnFalse() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 2");
@@ -148,7 +148,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenDifferentTitlesSamePricesSameCategories_WhenCheckEquality_thenReturnFalse() {
+    public void givenDifferentTitlesSamePricesSameCategories_whenCheckEquality_thenReturnFalse() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 2");
@@ -167,7 +167,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSameTitlesDifferentPricesSameCategories_WhenCheckEquality_thenReturnFalse() {
+    public void givenSameTitlesDifferentPricesSameCategories_whenCheckEquality_thenReturnFalse() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -186,7 +186,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSameTitlesSamePricesDifferentCategories_WhenCheckEquality_thenReturnFalse() {
+    public void givenSameTitlesSamePricesDifferentCategories_whenCheckEquality_thenReturnFalse() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -205,7 +205,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSameTitlesSamePricesSameCategories_WhenCheckEquality_thenReturnTrue() {
+    public void givenSameTitlesSamePricesSameCategories_whenCheckEquality_thenReturnTrue() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -224,7 +224,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSameTitlesSamePricesProduct1CategoryLesserThanProduct2Category_WhenCompareProducts_thenReturnNegative() {
+    public void givenSameTitlesSamePricesProduct1CategoryLesserThanProduct2Category_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -243,7 +243,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSameTitlesSameCategoriesProduct1PriceLesserThanProduct2Price_WhenCompareProducts_thenReturnNegative() {
+    public void givenSameTitlesSameCategoriesProduct1PriceLesserThanProduct2Price_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -262,7 +262,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSamePricesSameCategoriesProduct1TitleLesserThanProduct2Title_WhenCompareProducts_thenReturnNegative() {
+    public void givenSamePricesSameCategoriesProduct1TitleLesserThanProduct2Title_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 2");
@@ -281,7 +281,7 @@ public class ProductTest {
     }
 
     @Test
-    public void givenProductTitlesSameAndProduct1PriceLesserThanProduct2Price_WhenCompareProducts_thenReturnNegative() {
+    public void givenProductTitlesSameAndProduct1PriceLesserThanProduct2Price_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");

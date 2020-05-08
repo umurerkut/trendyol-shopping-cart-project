@@ -50,7 +50,7 @@ public class QuantityTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreSame_thenQuantityEqualsReturnTrue() {
+    public void givenTwoValues_whenValuesAreSame_thenQuantityEqualsReturnTrue() {
         //given
         Integer value1 = 10;
         Integer value2 = 10;
@@ -65,7 +65,7 @@ public class QuantityTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreDifferent_thenEqualsReturnFalse() {
+    public void givenTwoValues_whenValuesAreDifferent_thenEqualsReturnFalse() {
         //given
         Integer value1 = 10;
         Integer value2 = 20;
@@ -80,7 +80,7 @@ public class QuantityTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfQuantity1LesserThanValueOfQuantity2_thenQuantity1LesserThanQuantity2() {
+    public void givenTwoValues_whenValueOfQuantity1LesserThanValueOfQuantity2_thenQuantity1LesserThanQuantity2() {
         //given
         Integer value1 = 10;
         Integer value2 = 20;
@@ -95,7 +95,7 @@ public class QuantityTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfQuantity1GreaterThanValueOfQuantity2_thenQuantity1GreaterThanQuantity2() {
+    public void givenTwoValues_whenValueOfQuantity1GreaterThanValueOfQuantity2_thenQuantity1GreaterThanQuantity2() {
         //given
         Integer value1 = 20;
         Integer value2 = 10;

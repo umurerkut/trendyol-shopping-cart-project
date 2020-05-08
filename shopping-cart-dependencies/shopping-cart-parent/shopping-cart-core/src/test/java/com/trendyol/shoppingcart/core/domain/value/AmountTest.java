@@ -69,7 +69,7 @@ public class AmountTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreSame_thenAmountEqualsReturnTrue() {
+    public void givenTwoValues_whenValuesAreSame_thenAmountEqualsReturnTrue() {
         //given
         Double value1 = 10D;
         Double value2 = 10D;
@@ -84,7 +84,7 @@ public class AmountTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreDifferent_thenEqualsReturnFalse() {
+    public void givenTwoValues_whenValuesAreDifferent_thenEqualsReturnFalse() {
         //given
         Double value1 = 10D;
         Double value2 = 20D;
@@ -99,7 +99,7 @@ public class AmountTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfAmount1LesserThanValueOfAmount2_thenAmount1LesserThanAmount2() {
+    public void givenTwoValues_whenValueOfAmount1LesserThanValueOfAmount2_thenAmount1LesserThanAmount2() {
         //given
         Double value1 = 10D;
         Double value2 = 20D;
@@ -114,7 +114,7 @@ public class AmountTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfAmount1GreaterThanValueOfAmount2_thenAmount1GreaterThanAmount2() {
+    public void givenTwoValues_whenValueOfAmount1GreaterThanValueOfAmount2_thenAmount1GreaterThanAmount2() {
         //given
         Double value1 = 20D;
         Double value2 = 10D;

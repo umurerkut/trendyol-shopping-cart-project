@@ -64,7 +64,7 @@ public class RateTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreSame_thenRateEqualsReturnTrue() {
+    public void givenTwoValues_whenValuesAreSame_thenRateEqualsReturnTrue() {
         //given
         Double value1 = 10D;
         Double value2 = 10D;
@@ -79,7 +79,7 @@ public class RateTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreDifferent_thenEqualsReturnFalse() {
+    public void givenTwoValues_whenValuesAreDifferent_thenEqualsReturnFalse() {
         //given
         Double value1 = 10D;
         Double value2 = 20D;
@@ -94,7 +94,7 @@ public class RateTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfRate1LesserThanValueOfRate2_thenRate1LesserThanRate2() {
+    public void givenTwoValues_whenValueOfRate1LesserThanValueOfRate2_thenRate1LesserThanRate2() {
         //given
         Double value1 = 10D;
         Double value2 = 20D;
@@ -109,7 +109,7 @@ public class RateTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfRate1GreaterThanValueOfRate2_thenRate1GreaterThanRate2() {
+    public void givenTwoValues_whenValueOfRate1GreaterThanValueOfRate2_thenRate1GreaterThanRate2() {
         //given
         Double value1 = 20D;
         Double value2 = 10D;

@@ -51,7 +51,7 @@ public class DiscountNameTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreSame_thenDiscountNameEqualsReturnTrue() {
+    public void givenTwoValues_whenValuesAreSame_thenDiscountNameEqualsReturnTrue() {
         //given
         String value1 = "Test DiscountName";
         String value2 = "Test DiscountName";
@@ -66,7 +66,7 @@ public class DiscountNameTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreDifferent_thenEqualsReturnFalse() {
+    public void givenTwoValues_whenValuesAreDifferent_thenEqualsReturnFalse() {
         //given
         String value1 = "Test DiscountName 1";
         String value2 = "Test DiscountName 2";
@@ -81,7 +81,7 @@ public class DiscountNameTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfDiscountName1LesserThanValueOfDiscountName2_thenDiscountName1LesserThanDiscountName2() {
+    public void givenTwoValues_whenValueOfDiscountName1LesserThanValueOfDiscountName2_thenDiscountName1LesserThanDiscountName2() {
         //given
         String value1 = "Test DiscountName 1";
         String value2 = "Test DiscountName 2";
@@ -96,7 +96,7 @@ public class DiscountNameTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfDiscountName1GreaterThanValueOfDiscountName2_thenDiscountName1GreaterThanDiscountName2() {
+    public void givenTwoValues_whenValueOfDiscountName1GreaterThanValueOfDiscountName2_thenDiscountName1GreaterThanDiscountName2() {
         //given
         String value1 = "Test DiscountName 2";
         String value2 = "Test DiscountName 1";

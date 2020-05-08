@@ -51,7 +51,7 @@ public class TitleTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreSame_thenTitleEqualsReturnTrue() {
+    public void givenTwoValues_whenValuesAreSame_thenTitleEqualsReturnTrue() {
         //given
         String value1 = "Test Title";
         String value2 = "Test Title";
@@ -66,7 +66,7 @@ public class TitleTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValuesAreDifferent_thenEqualsReturnFalse() {
+    public void givenTwoValues_whenValuesAreDifferent_thenEqualsReturnFalse() {
         //given
         String value1 = "Test Title 1";
         String value2 = "Test Title 2";
@@ -81,7 +81,7 @@ public class TitleTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfTitle1LesserThanValueOfTitle2_thenTitle1LesserThanTitle2() {
+    public void givenTwoValues_whenValueOfTitle1LesserThanValueOfTitle2_thenTitle1LesserThanTitle2() {
         //given
         String value1 = "Test Title 1";
         String value2 = "Test Title 2";
@@ -96,7 +96,7 @@ public class TitleTest {
     }
 
     @Test
-    public void givenTwoValues_WhenValueOfTitle1GreaterThanValueOfTitle2_thenTitle1GreaterThanTitle2() {
+    public void givenTwoValues_whenValueOfTitle1GreaterThanValueOfTitle2_thenTitle1GreaterThanTitle2() {
         //given
         String value1 = "Test Title 2";
         String value2 = "Test Title 1";
