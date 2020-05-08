@@ -1,7 +1,6 @@
 package com.trendyol.shoppingcart.core.domain.value;
 
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,109 +8,105 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TitleTest {
 
     @Test
-    @DisplayName("Should Return Title When Valid Value Is Given")
-    public void shouldReturnTitle_validValueGiven() {
-        //given
-        String value = "Test Title";
-
-        //when
-        Title title = Title.ofValue(value);
-
-        //then
-        assertNotNull(title);
-        assertEquals(title.getValue(), value);
-    }
-
-    @Test
-    @DisplayName("Should Throw Invalid Value Exception When Null Value Is Given")
-    public void shouldThrowInvalidValueException_nullValueGiven() {
+    public void givenValue_whenValueIsNull_thenThrowInvalidValueException() {
         //given
         String value = null;
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Title.ofValue(value));
+        assertNull(value);
 
         //then
+        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Title.valueOf(value));
         assertNotNull(exception);
         assertEquals(exception.getMessage(), "Title value can not be null.");
     }
 
     @Test
-    @DisplayName("Should Throw Invalid Value Exception When Blank Value Is Given")
-    public void shouldThrowInvalidValueException_blankValueGiven() {
+    public void givenValue_whenValueIsBlank_thenThrowInvalidValueException() {
         //given
         String value = "";
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Title.ofValue(value));
+        assertEquals(value, "");
 
         //then
+        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Title.valueOf(value));
         assertNotNull(exception);
         assertEquals(exception.getMessage(), "Title value can not be blank.");
     }
 
     @Test
-    @DisplayName("Should Return Same Titles When Same Values Are Given")
-    public void shouldReturnSameTitles_sameValuesGiven() {
+    public void givenValue_whenValueIsNotNullAndNotBlank_thenReturnTitleOfValue() {
         //given
         String value = "Test Title";
 
         //when
-        Title title1 = Title.ofValue(value);
-        Title title2 = Title.ofValue(value);
+        assertNotNull(value);
+        assertNotEquals(value, "");
 
         //then
-        assertNotNull(title1);
-        assertEquals(title1.getValue(), value);
-        assertNotNull(title2);
-        assertEquals(title2.getValue(), value);
-        assertEquals(title1, title2);
-        assertEquals(title1.getValue(), title2.getValue());
+        Title title = Title.valueOf(value);
+        assertNotNull(title);
+        assertEquals(title.getValue(), value);
     }
 
     @Test
-    @DisplayName("Should Return Different Titles When Different Values Are Given")
-    public void shouldReturnDifferentTitles_differentValueGiven() {
+    public void givenTwoValues_WhenValuesAreSame_thenTitleEqualsReturnTrue() {
+        //given
+        String value1 = "Test Title";
+        String value2 = "Test Title";
+
+        //when
+        assertEquals(value1, value2);
+
+        //then
+        Title title1 = Title.valueOf(value1);
+        Title title2 = Title.valueOf(value2);
+        assertEquals(title1, title2);
+    }
+
+    @Test
+    public void givenTwoValues_WhenValuesAreDifferent_thenEqualsReturnFalse() {
         //given
         String value1 = "Test Title 1";
         String value2 = "Test Title 2";
 
         //when
-        Title title1 = Title.ofValue(value1);
-        Title title2 = Title.ofValue(value2);
+        assertNotEquals(value1, value2);
 
         //then
-        assertNotNull(title1);
-        assertEquals(title1.getValue(), value1);
-        assertNotNull(title2);
-        assertEquals(title2.getValue(), value2);
+        Title title1 = Title.valueOf(value1);
+        Title title2 = Title.valueOf(value2);
         assertNotEquals(title1, title2);
-        assertNotEquals(title1.getValue(), title2.getValue());
     }
 
     @Test
-    @DisplayName("Should Compare Different Titles When Different Values Are Given")
-    public void shouldCompareDifferentTitles_differentValuesGiven() {
+    public void givenTwoValues_WhenValueOfTitle1LesserThanValueOfTitle2_thenTitle1LesserThanTitle2() {
         //given
-        String value1 = "A Test Title";
-        String value2 = "B Test Title";
+        String value1 = "Test Title 1";
+        String value2 = "Test Title 2";
 
         //when
-        Title title1 = Title.ofValue(value1);
-        Title title2 = Title.ofValue(value2);
-        int result1 = title1.compareTo(title2);
-        int result2 = title2.compareTo(title1);
+        assertEquals(-1, value1.compareTo(value2));
 
         //then
-        assertNotNull(title1);
-        assertEquals(title1.getValue(), value1);
-        assertNotNull(title2);
-        assertEquals(title2.getValue(), value2);
-        assertNotEquals(title1, title2);
-        assertNotEquals(title1.getValue(), title2.getValue());
-        assertEquals(result1, value1.compareTo(value2));
-        assertTrue(result1 < 0);
-        assertEquals(result2, value2.compareTo(value1));
-        assertTrue(result2 > 0);
+        Title title1 = Title.valueOf(value1);
+        Title title2 = Title.valueOf(value2);
+        assertEquals(-1, title1.compareTo(title2));
+    }
+
+    @Test
+    public void givenTwoValues_WhenValueOfTitle1GreaterThanValueOfTitle2_thenTitle1GreaterThanTitle2() {
+        //given
+        String value1 = "Test Title 2";
+        String value2 = "Test Title 1";
+
+        //when
+        assertEquals(1, value1.compareTo(value2));
+
+        //then
+        Title title1 = Title.valueOf(value1);
+        Title title2 = Title.valueOf(value2);
+        assertEquals(1, title1.compareTo(title2));
     }
 }

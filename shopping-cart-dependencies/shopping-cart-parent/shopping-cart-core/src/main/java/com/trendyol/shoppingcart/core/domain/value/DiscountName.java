@@ -6,27 +6,27 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /*
-Title value object
+DiscountName value object
  */
-public final class Title implements Comparable<Title> {
+public final class DiscountName implements Comparable<DiscountName> {
 
     private final String value;
 
-    private Title(String value) {
+    private DiscountName(String value) {
 
         if (value == null) {
-            throw new InvalidValueException("Title value can not be null.");
+            throw new InvalidValueException("Discount name value can not be null.");
         }
 
         if ("".equals(value)) {
-            throw new InvalidValueException("Title value can not be blank.");
+            throw new InvalidValueException("Discount name value can not be blank.");
         }
 
         this.value = value;
     }
 
-    public static Title valueOf(String value) {
-        return new Title(value);
+    public static DiscountName valueOf(String value) {
+        return new DiscountName(value);
     }
 
     public String getValue() {
@@ -37,8 +37,8 @@ public final class Title implements Comparable<Title> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Title title = (Title) o;
-        return value.equals(title.value);
+        DiscountName discountName = (DiscountName) o;
+        return value.equals(discountName.value);
     }
 
     @Override
@@ -52,7 +52,7 @@ public final class Title implements Comparable<Title> {
     }
 
     @Override
-    public int compareTo(Title o) {
-        return Comparator.comparing(Title::getValue).compare(this, o);
+    public int compareTo(DiscountName o) {
+        return Comparator.comparing(DiscountName::getValue).compare(this, o);
     }
 }
