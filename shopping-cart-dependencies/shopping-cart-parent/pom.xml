@@ -8,7 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <modules>
+        <module>shopping-cart-core</module>
+        <module>shopping-cart-client-trendyol</module>
+    </modules>
     <artifactId>shopping-cart-parent</artifactId>
     <packaging>pom</packaging>
 

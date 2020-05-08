@@ -10,8 +10,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>shopping-cart-parent</module>
-        <module>shopping-cart-core</module>
-        <module>shopping-cart-client-trendyol</module>
     </modules>
 
     <properties>
