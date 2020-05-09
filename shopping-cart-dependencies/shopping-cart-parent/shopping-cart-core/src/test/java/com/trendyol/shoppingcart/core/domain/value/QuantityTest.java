@@ -3,7 +3,8 @@ package com.trendyol.shoppingcart.core.domain.value;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class QuantityTest {
 
@@ -13,11 +14,16 @@ public class QuantityTest {
         int value = -10;
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Quantity.valueOf(value));
+        assertThat(value).isNotNull().isNegative();
+        Throwable throwable = catchThrowable(() -> {
+            Quantity quantity = Quantity.valueOf(value);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Quantity value can not be negative!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Quantity value can not be negative!");
     }
 
     @Test
@@ -26,12 +32,12 @@ public class QuantityTest {
         Integer value = null;
 
         //when
-        assertNull(value);
+        assertThat(value).isNull();
 
         //then
         Quantity quantity = Quantity.valueOf(value);
-        assertNotNull(quantity);
-        assertTrue(quantity.isZero());
+        assertThat(quantity).isNotNull();
+        assertThat(quantity.isZero()).isTrue();
     }
 
     @Test
@@ -40,13 +46,12 @@ public class QuantityTest {
         Integer value = 10;
 
         //when
-        assertNotNull(value);
-        assertNotEquals(value, "");
+        assertThat(value).isNotNull().isPositive();
 
         //then
         Quantity quantity = Quantity.valueOf(value);
-        assertNotNull(quantity);
-        assertEquals(quantity.intValue(), value);
+        assertThat(quantity).isNotNull();
+        assertThat(quantity.intValue()).isEqualTo(value);
     }
 
     @Test
@@ -56,12 +61,12 @@ public class QuantityTest {
         Integer value2 = 10;
 
         //when
-        assertEquals(value1, value2);
+        assertThat(value1).isEqualTo(value2);
 
         //then
         Quantity quantity1 = Quantity.valueOf(value1);
         Quantity quantity2 = Quantity.valueOf(value2);
-        assertEquals(quantity1, quantity2);
+        assertThat(quantity1).isEqualTo(quantity2);
     }
 
     @Test
@@ -71,27 +76,27 @@ public class QuantityTest {
         Integer value2 = 20;
 
         //when
-        assertNotEquals(value1, value2);
+        assertThat(value1).isNotEqualTo(value2);
 
         //then
         Quantity quantity1 = Quantity.valueOf(value1);
         Quantity quantity2 = Quantity.valueOf(value2);
-        assertNotEquals(quantity1, quantity2);
+        assertThat(quantity1).isNotEqualTo(quantity2);
     }
 
     @Test
-    public void givenTwoValues_whenValueOfQuantity1LesserThanValueOfQuantity2_thenQuantity1LesserThanQuantity2() {
+    public void givenTwoValues_whenValueOfQuantity1LessThanValueOfQuantity2_thenQuantity1LessThanQuantity2() {
         //given
         Integer value1 = 10;
         Integer value2 = 20;
 
         //when
-        assertEquals(-1, value1.compareTo(value2));
+        assertThat(value1).isLessThan(value2);
 
         //then
         Quantity quantity1 = Quantity.valueOf(value1);
         Quantity quantity2 = Quantity.valueOf(value2);
-        assertTrue(quantity1.isLessThan(quantity2));
+        assertThat(quantity1).isLessThan(quantity2);
     }
 
     @Test
@@ -101,12 +106,12 @@ public class QuantityTest {
         Integer value2 = 10;
 
         //when
-        assertEquals(1, value1.compareTo(value2));
+        assertThat(value1).isGreaterThan(value2);
 
         //then
         Quantity quantity1 = Quantity.valueOf(value1);
         Quantity quantity2 = Quantity.valueOf(value2);
-        assertTrue(quantity1.isGreaterThan(quantity2));
+        assertThat(quantity1).isGreaterThan(quantity2);
     }
 
     @Test
@@ -119,7 +124,7 @@ public class QuantityTest {
         Quantity result = quantity1.add(quantity2);
 
         //then
-        assertEquals(result, Quantity.valueOf(30));
+        assertThat(result).isEqualTo(Quantity.valueOf(30));
     }
 
     @Test
@@ -132,7 +137,7 @@ public class QuantityTest {
         Quantity result = quantity1.subtract(quantity2);
 
         //then
-        assertEquals(result, Quantity.valueOf(10));
+        assertThat(result).isEqualTo(Quantity.valueOf(10));
     }
 
     @Test
@@ -145,7 +150,7 @@ public class QuantityTest {
         Quantity result = quantity.multiply(multiplier);
 
         //then
-        assertEquals(result, Quantity.valueOf(40));
+        assertThat(result).isEqualTo(Quantity.valueOf(40));
     }
 
     @Test
@@ -158,7 +163,7 @@ public class QuantityTest {
         Quantity result = quantity.divide(division);
 
         //then
-        assertEquals(result, Quantity.valueOf(10));
+        assertThat(result).isEqualTo(Quantity.valueOf(10));
     }
 
     @Test
@@ -168,10 +173,12 @@ public class QuantityTest {
         Integer division = 0;
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> quantity.divide(division));
+        Throwable throwable = catchThrowable(() -> quantity.divide(division));
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Divisor value can not be negative!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Divisor value can not be negative!");
     }
 }

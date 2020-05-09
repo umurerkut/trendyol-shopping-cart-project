@@ -3,7 +3,8 @@ package com.trendyol.shoppingcart.core.domain.value;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class TitleTest {
 
@@ -13,12 +14,16 @@ public class TitleTest {
         String value = null;
 
         //when
-        assertNull(value);
+        assertThat(value).isNull();
+        Throwable throwable = catchThrowable(() -> {
+            Title title = Title.valueOf(value);
+        });
 
         //then
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Title.valueOf(value));
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Title value can not be null.");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Title value can not be null.");
     }
 
     @Test
@@ -27,12 +32,16 @@ public class TitleTest {
         String value = "";
 
         //when
-        assertEquals(value, "");
+        assertThat(value).isBlank();
+        Throwable throwable = catchThrowable(() -> {
+            Title title = Title.valueOf(value);
+        });
 
         //then
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Title.valueOf(value));
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Title value can not be blank.");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Title value can not be blank.");
     }
 
     @Test
@@ -41,58 +50,57 @@ public class TitleTest {
         String value = "Test Title";
 
         //when
-        assertNotNull(value);
-        assertNotEquals(value, "");
+        assertThat(value).isNotNull().isNotBlank();
 
         //then
         Title title = Title.valueOf(value);
-        assertNotNull(title);
-        assertEquals(title.getValue(), value);
+        assertThat(title).isNotNull();
+        assertThat(title.getValue()).isEqualTo(value);
     }
 
     @Test
-    public void givenTwoValues_whenValuesAreSame_thenTitleEqualsReturnTrue() {
+    public void givenTwoValues_whenValuesAreSame_thenTitlesAreEqual() {
         //given
         String value1 = "Test Title";
         String value2 = "Test Title";
 
         //when
-        assertEquals(value1, value2);
+        assertThat(value1).isEqualTo(value2);
 
         //then
         Title title1 = Title.valueOf(value1);
         Title title2 = Title.valueOf(value2);
-        assertEquals(title1, title2);
+        assertThat(title1).isEqualTo(title2);
     }
 
     @Test
-    public void givenTwoValues_whenValuesAreDifferent_thenEqualsReturnFalse() {
+    public void givenTwoValues_whenValuesAreDifferent_thenTitlesAreNotEqual() {
         //given
         String value1 = "Test Title 1";
         String value2 = "Test Title 2";
 
         //when
-        assertNotEquals(value1, value2);
+        assertThat(value1).isNotEqualTo(value2);
 
         //then
         Title title1 = Title.valueOf(value1);
         Title title2 = Title.valueOf(value2);
-        assertNotEquals(title1, title2);
+        assertThat(title1).isNotEqualTo(title2);
     }
 
     @Test
-    public void givenTwoValues_whenValueOfTitle1LesserThanValueOfTitle2_thenTitle1LesserThanTitle2() {
+    public void givenTwoValues_whenValueOfTitle1LessThanValueOfTitle2_thenTitle1LessThanTitle2() {
         //given
         String value1 = "Test Title 1";
         String value2 = "Test Title 2";
 
         //when
-        assertEquals(-1, value1.compareTo(value2));
+        assertThat(value1).isLessThan(value2);
 
         //then
         Title title1 = Title.valueOf(value1);
         Title title2 = Title.valueOf(value2);
-        assertEquals(-1, title1.compareTo(title2));
+        assertThat(title1).isLessThan(title2);
     }
 
     @Test
@@ -102,11 +110,11 @@ public class TitleTest {
         String value2 = "Test Title 1";
 
         //when
-        assertEquals(1, value1.compareTo(value2));
+        assertThat(value1).isGreaterThan(value2);
 
         //then
         Title title1 = Title.valueOf(value1);
         Title title2 = Title.valueOf(value2);
-        assertEquals(1, title1.compareTo(title2));
+        assertThat(title1).isGreaterThan(title2);
     }
 }

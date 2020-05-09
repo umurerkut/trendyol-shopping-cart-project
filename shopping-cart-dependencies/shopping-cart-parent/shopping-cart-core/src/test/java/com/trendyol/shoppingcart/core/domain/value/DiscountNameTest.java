@@ -3,7 +3,8 @@ package com.trendyol.shoppingcart.core.domain.value;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class DiscountNameTest {
 
@@ -13,12 +14,16 @@ public class DiscountNameTest {
         String value = null;
 
         //when
-        assertNull(value);
+        assertThat(value).isNull();
+        Throwable throwable = catchThrowable(() -> {
+            DiscountName discountName = DiscountName.valueOf(value);
+        });
 
         //then
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> DiscountName.valueOf(value));
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Discount name value can not be null.");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Discount name value can not be null.");
     }
 
     @Test
@@ -27,12 +32,16 @@ public class DiscountNameTest {
         String value = "";
 
         //when
-        assertEquals(value, "");
+        assertThat(value).isBlank();
+        Throwable throwable = catchThrowable(() -> {
+            DiscountName discountName = DiscountName.valueOf(value);
+        });
 
         //then
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> DiscountName.valueOf(value));
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Discount name value can not be blank.");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Discount name value can not be blank.");
     }
 
     @Test
@@ -41,13 +50,12 @@ public class DiscountNameTest {
         String value = "Test DiscountName";
 
         //when
-        assertNotNull(value);
-        assertNotEquals(value, "");
+        assertThat(value).isNotNull().isNotBlank();
 
         //then
         DiscountName discountName = DiscountName.valueOf(value);
-        assertNotNull(discountName);
-        assertEquals(discountName.getValue(), value);
+        assertThat(discountName).isNotNull();
+        assertThat(discountName.getValue()).isEqualTo(value);
     }
 
     @Test
@@ -57,12 +65,12 @@ public class DiscountNameTest {
         String value2 = "Test DiscountName";
 
         //when
-        assertEquals(value1, value2);
+        assertThat(value1).isEqualTo(value2);
 
         //then
         DiscountName discountName1 = DiscountName.valueOf(value1);
         DiscountName discountName2 = DiscountName.valueOf(value2);
-        assertEquals(discountName1, discountName2);
+        assertThat(discountName1).isEqualTo(discountName2);
     }
 
     @Test
@@ -72,27 +80,27 @@ public class DiscountNameTest {
         String value2 = "Test DiscountName 2";
 
         //when
-        assertNotEquals(value1, value2);
+        assertThat(value1).isNotEqualTo(value2);
 
         //then
         DiscountName discountName1 = DiscountName.valueOf(value1);
         DiscountName discountName2 = DiscountName.valueOf(value2);
-        assertNotEquals(discountName1, discountName2);
+        assertThat(discountName1).isNotEqualTo(discountName2);
     }
 
     @Test
-    public void givenTwoValues_whenValueOfDiscountName1LesserThanValueOfDiscountName2_thenDiscountName1LesserThanDiscountName2() {
+    public void givenTwoValues_whenValueOfDiscountName1LessThanValueOfDiscountName2_thenDiscountName1LessThanDiscountName2() {
         //given
         String value1 = "Test DiscountName 1";
         String value2 = "Test DiscountName 2";
 
         //when
-        assertEquals(-1, value1.compareTo(value2));
+        assertThat(value1).isLessThan(value2);
 
         //then
         DiscountName discountName1 = DiscountName.valueOf(value1);
         DiscountName discountName2 = DiscountName.valueOf(value2);
-        assertEquals(-1, discountName1.compareTo(discountName2));
+        assertThat(discountName1).isLessThan(discountName2);
     }
 
     @Test
@@ -102,11 +110,11 @@ public class DiscountNameTest {
         String value2 = "Test DiscountName 1";
 
         //when
-        assertEquals(1, value1.compareTo(value2));
+        assertThat(value1).isGreaterThan(value2);
 
         //then
         DiscountName discountName1 = DiscountName.valueOf(value1);
         DiscountName discountName2 = DiscountName.valueOf(value2);
-        assertEquals(1, discountName1.compareTo(discountName2));
+        assertThat(discountName1).isGreaterThan(discountName2);
     }
 }

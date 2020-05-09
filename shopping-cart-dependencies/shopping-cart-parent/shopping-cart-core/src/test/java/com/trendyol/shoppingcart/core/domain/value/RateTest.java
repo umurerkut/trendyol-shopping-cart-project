@@ -3,21 +3,26 @@ package com.trendyol.shoppingcart.core.domain.value;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class RateTest {
 
     @Test
-    public void givenValue_whenValueIsLesserThan0_thenThrowInvalidValueException() {
+    public void givenValue_whenValueIsLessThan0_thenThrowInvalidValueException() {
         //given
         double value = -10D;
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Rate.valueOf(value));
+        Throwable throwable = catchThrowable(() -> {
+            Rate rate = Rate.valueOf(value);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Rate value can not be less than " + 0D + '!');
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Rate value can not be less than " + 0D + '!');
     }
 
 
@@ -27,11 +32,15 @@ public class RateTest {
         double value = 110D;
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> Rate.valueOf(value));
+        Throwable throwable = catchThrowable(() -> {
+            Rate rate = Rate.valueOf(value);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Rate value can not be greater than " + 100D + '!');
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Rate value can not be greater than " + 100D + '!');
     }
 
     @Test
@@ -40,12 +49,12 @@ public class RateTest {
         Double value = null;
 
         //when
-        assertNull(value);
+        assertThat(value).isNull();
 
         //then
         Rate rate = Rate.valueOf(value);
-        assertNotNull(rate);
-        assertTrue(rate.isZero());
+        assertThat(rate).isNotNull();
+        assertThat(rate.isZero()).isTrue();
     }
 
     @Test
@@ -54,13 +63,12 @@ public class RateTest {
         Double value = 10D;
 
         //when
-        assertNotNull(value);
-        assertNotEquals(value, "");
+        assertThat(value).isNotNull();
 
         //then
         Rate rate = Rate.valueOf(value);
-        assertNotNull(rate);
-        assertEquals(rate.doubleValue(), value);
+        assertThat(rate).isNotNull();
+        assertThat(rate.doubleValue()).isEqualTo(value);
     }
 
     @Test
@@ -70,12 +78,12 @@ public class RateTest {
         Double value2 = 10D;
 
         //when
-        assertEquals(value1, value2);
+        assertThat(value1).isEqualTo(value2);
 
         //then
         Rate rate1 = Rate.valueOf(value1);
         Rate rate2 = Rate.valueOf(value2);
-        assertEquals(rate1, rate2);
+        assertThat(rate1).isEqualTo(rate2);
     }
 
     @Test
@@ -85,27 +93,27 @@ public class RateTest {
         Double value2 = 20D;
 
         //when
-        assertNotEquals(value1, value2);
+        assertThat(value1).isNotEqualTo(value2);
 
         //then
         Rate rate1 = Rate.valueOf(value1);
         Rate rate2 = Rate.valueOf(value2);
-        assertNotEquals(rate1, rate2);
+        assertThat(rate1).isNotEqualTo(rate2);
     }
 
     @Test
-    public void givenTwoValues_whenValueOfRate1LesserThanValueOfRate2_thenRate1LesserThanRate2() {
+    public void givenTwoValues_whenValueOfRate1LessThanValueOfRate2_thenRate1LessThanRate2() {
         //given
         Double value1 = 10D;
         Double value2 = 20D;
 
         //when
-        assertEquals(-1, value1.compareTo(value2));
+        assertThat(value1).isLessThan(value2);
 
         //then
         Rate rate1 = Rate.valueOf(value1);
         Rate rate2 = Rate.valueOf(value2);
-        assertTrue(rate1.isLessThan(rate2));
+        assertThat(rate1).isLessThan(rate2);
     }
 
     @Test
@@ -115,12 +123,12 @@ public class RateTest {
         Double value2 = 10D;
 
         //when
-        assertEquals(1, value1.compareTo(value2));
+        assertThat(value1).isGreaterThan(value2);
 
         //then
         Rate rate1 = Rate.valueOf(value1);
         Rate rate2 = Rate.valueOf(value2);
-        assertTrue(rate1.isGreaterThan(rate2));
+        assertThat(rate1).isGreaterThan(rate2);
     }
 
     @Test
@@ -133,7 +141,7 @@ public class RateTest {
         Rate result = rate1.add(rate2);
 
         //then
-        assertEquals(result, Rate.valueOf(30D));
+        assertThat(result).isEqualTo(Rate.valueOf(30D));
     }
 
     @Test
@@ -146,7 +154,7 @@ public class RateTest {
         Rate result = rate1.subtract(rate2);
 
         //then
-        assertEquals(result, Rate.valueOf(10D));
+        assertThat(result).isEqualTo(Rate.valueOf(10D));
     }
 
     @Test
@@ -159,7 +167,7 @@ public class RateTest {
         Rate result = rate.multiply(multiplier);
 
         //then
-        assertEquals(result, Rate.valueOf(40D));
+        assertThat(result).isEqualTo(Rate.valueOf(40D));
     }
 
     @Test
@@ -172,7 +180,7 @@ public class RateTest {
         Rate result = rate.divide(division);
 
         //then
-        assertEquals(result, Rate.valueOf(10D));
+        assertThat(result).isEqualTo(Rate.valueOf(10D));
     }
 
     @Test
@@ -182,10 +190,12 @@ public class RateTest {
         Double division = 0D;
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> rate.divide(division));
+        Throwable throwable = catchThrowable(() -> rate.divide(division));
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Divisor value can not be negative!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Divisor value can not be negative!");
     }
 }

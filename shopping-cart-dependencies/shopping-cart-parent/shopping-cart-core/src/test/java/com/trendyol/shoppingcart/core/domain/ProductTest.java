@@ -5,7 +5,8 @@ import com.trendyol.shoppingcart.core.domain.value.Title;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class ProductTest {
 
@@ -17,12 +18,16 @@ public class ProductTest {
         Category category = new Category(Title.valueOf("Category"));
 
         //when
-        assertNull(title);
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> new Product(title, price, category));
+        assertThat(title).isNull();
+        Throwable throwable = catchThrowable(() -> {
+            Product product = new Product(title, price, category);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Product title can not be null!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Product title can not be null!");
     }
 
     @Test
@@ -33,12 +38,16 @@ public class ProductTest {
         Category category = new Category(Title.valueOf("Category"));
 
         //when
-        assertNull(price);
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> new Product(title, price, category));
+        assertThat(price).isNull();
+        Throwable throwable = catchThrowable(() -> {
+            Product product = new Product(title, price, category);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Product price can not be null!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Product price can not be null!");
     }
 
     @Test
@@ -49,12 +58,17 @@ public class ProductTest {
         Category category = new Category(Title.valueOf("Category"));
 
         //when
-        assertTrue(price.isZero());
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> new Product(title, price, category));
+        assertThat(price).isNotNull();
+        assertThat(price.isZero()).isTrue();
+        Throwable throwable = catchThrowable(() -> {
+            Product product = new Product(title, price, category);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Product price can not be zero!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Product price can not be zero!");
     }
 
     @Test
@@ -65,12 +79,16 @@ public class ProductTest {
         Category category = null;
 
         //when
-        assertNull(category);
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> new Product(title, price, category));
+        assertThat(category).isNull();
+        Throwable throwable = catchThrowable(() -> {
+            Product product = new Product(title, price, category);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Product category can not be null!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Product category can not be null!");
     }
 
     @Test
@@ -84,10 +102,10 @@ public class ProductTest {
         Product product = new Product(title, price, category);
 
         //then
-        assertNotNull(product);
-        assertEquals(product.getTitle(), title);
-        assertEquals(product.getPrice(), price);
-        assertEquals(product.getCategory(), category);
+        assertThat(product);
+        assertThat(product.getTitle()).isEqualTo(title);
+        assertThat(product.getPrice()).isEqualTo(price);
+        assertThat(product.getCategory()).isEqualTo(category);
     }
 
     @Test
@@ -103,10 +121,9 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        boolean result = product1.equals(product2);
 
         //then
-        assertFalse(result);
+        assertThat(product1).isNotEqualTo(product2);
     }
 
     @Test
@@ -122,10 +139,9 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        boolean result = product1.equals(product2);
 
         //then
-        assertFalse(result);
+        assertThat(product1).isNotEqualTo(product2);
     }
 
     @Test
@@ -141,10 +157,9 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        boolean result = product1.equals(product2);
 
         //then
-        assertFalse(result);
+        assertThat(product1).isNotEqualTo(product2);
     }
 
     @Test
@@ -160,10 +175,9 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        boolean result = product1.equals(product2);
 
         //then
-        assertFalse(result);
+        assertThat(product1).isNotEqualTo(product2);
     }
 
     @Test
@@ -179,10 +193,9 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        boolean result = product1.equals(product2);
 
         //then
-        assertFalse(result);
+        assertThat(product1).isNotEqualTo(product2);
     }
 
     @Test
@@ -198,10 +211,9 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        boolean result = product1.equals(product2);
 
         //then
-        assertFalse(result);
+        assertThat(product1).isNotEqualTo(product2);
     }
 
     @Test
@@ -217,14 +229,13 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        boolean result = product1.equals(product2);
 
         //then
-        assertTrue(result);
+        assertThat(product1).isEqualTo(product2);
     }
 
     @Test
-    public void givenSameTitlesSamePricesProduct1CategoryLesserThanProduct2Category_whenCompareProducts_thenReturnNegative() {
+    public void givenSameTitlesSamePricesProduct1CategoryLessThanProduct2Category_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -236,14 +247,13 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        int result = product1.compareTo(product2);
 
         //then
-        assertTrue(result < 0);
+        assertThat(product1).isLessThan(product2);
     }
 
     @Test
-    public void givenSameTitlesSameCategoriesProduct1PriceLesserThanProduct2Price_whenCompareProducts_thenReturnNegative() {
+    public void givenSameTitlesSameCategoriesProduct1PriceLessThanProduct2Price_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -255,14 +265,13 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        int result = product1.compareTo(product2);
 
         //then
-        assertTrue(result < 0);
+        assertThat(product1).isLessThan(product2);
     }
 
     @Test
-    public void givenSamePricesSameCategoriesProduct1TitleLesserThanProduct2Title_whenCompareProducts_thenReturnNegative() {
+    public void givenSamePricesSameCategoriesProduct1TitleLessThanProduct2Title_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 2");
@@ -274,14 +283,13 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        int result = product1.compareTo(product2);
 
         //then
-        assertTrue(result < 0);
+        assertThat(product1).isLessThan(product2);
     }
 
     @Test
-    public void givenProductTitlesSameAndProduct1PriceLesserThanProduct2Price_whenCompareProducts_thenReturnNegative() {
+    public void givenProductTitlesSameAndProduct1PriceLessThanProduct2Price_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");
         Title title2 = Title.valueOf("Product 1");
@@ -293,9 +301,8 @@ public class ProductTest {
         //when
         Product product1 = new Product(title1, price1, category1);
         Product product2 = new Product(title2, price2, category2);
-        int result = product1.compareTo(product2);
 
         //then
-        assertTrue(result < 0);
+        assertThat(product1).isLessThan(product2);
     }
 }

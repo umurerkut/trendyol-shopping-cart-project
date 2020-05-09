@@ -3,7 +3,8 @@ package com.trendyol.shoppingcart.core.domain.value;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class AmountTest {
 
@@ -13,12 +14,12 @@ public class AmountTest {
         Double value = null;
 
         //when
-        assertNull(value);
+        assertThat(value).isNull();
 
         //then
         Amount amount = Amount.valueOf(value);
-        assertNotNull(amount);
-        assertTrue(amount.isZero());
+        assertThat(amount).isNotNull();
+        assertThat(amount.isZero()).isTrue();
     }
 
     @Test
@@ -27,13 +28,12 @@ public class AmountTest {
         Double value = 10D;
 
         //when
-        assertNotNull(value);
-        assertNotEquals(value, "");
+        assertThat(value).isNotNull();
 
         //then
         Amount amount = Amount.valueOf(value);
-        assertNotNull(amount);
-        assertEquals(amount.doubleValue(), value);
+        assertThat(amount).isNotNull();
+        assertThat(amount.doubleValue()).isEqualTo(value);
     }
 
     @Test
@@ -42,14 +42,13 @@ public class AmountTest {
         Double value = 10D;
 
         //when
-        assertNotNull(value);
-        assertNotEquals(value, "");
+        assertThat(value).isNotNull().isPositive();
 
         //then
         Amount amount = Amount.valueOf(value);
-        assertNotNull(amount);
-        assertTrue(amount.isPositive());
-        assertEquals(amount.doubleValue(), value);
+        assertThat(amount).isNotNull();
+        assertThat(amount.isPositive()).isTrue();
+        assertThat(amount.doubleValue()).isEqualTo(value);
     }
 
     @Test
@@ -58,14 +57,13 @@ public class AmountTest {
         Double value = -10D;
 
         //when
-        assertNotNull(value);
-        assertNotEquals(value, "");
+        assertThat(value).isNotNull().isNegative();
 
         //then
         Amount amount = Amount.valueOf(value);
-        assertNotNull(amount);
-        assertTrue(amount.isNegative());
-        assertEquals(amount.doubleValue(), value);
+        assertThat(amount).isNotNull();
+        assertThat(amount.isNegative()).isTrue();
+        assertThat(amount.doubleValue()).isEqualTo(value);
     }
 
     @Test
@@ -75,12 +73,12 @@ public class AmountTest {
         Double value2 = 10D;
 
         //when
-        assertEquals(value1, value2);
+        assertThat(value1).isEqualTo(value2);
 
         //then
         Amount amount1 = Amount.valueOf(value1);
         Amount amount2 = Amount.valueOf(value2);
-        assertEquals(amount1, amount2);
+        assertThat(amount1).isEqualTo(amount2);
     }
 
     @Test
@@ -90,27 +88,27 @@ public class AmountTest {
         Double value2 = 20D;
 
         //when
-        assertNotEquals(value1, value2);
+        assertThat(value1).isNotEqualTo(value2);
 
         //then
         Amount amount1 = Amount.valueOf(value1);
         Amount amount2 = Amount.valueOf(value2);
-        assertNotEquals(amount1, amount2);
+        assertThat(amount1).isNotEqualTo(amount2);
     }
 
     @Test
-    public void givenTwoValues_whenValueOfAmount1LesserThanValueOfAmount2_thenAmount1LesserThanAmount2() {
+    public void givenTwoValues_whenValueOfAmount1LessThanValueOfAmount2_thenAmount1LessThanAmount2() {
         //given
         Double value1 = 10D;
         Double value2 = 20D;
 
         //when
-        assertEquals(-1, value1.compareTo(value2));
+        assertThat(value1).isLessThan(value2);
 
         //then
         Amount amount1 = Amount.valueOf(value1);
         Amount amount2 = Amount.valueOf(value2);
-        assertTrue(amount1.isLessThan(amount2));
+        assertThat(amount1).isLessThan(amount2);
     }
 
     @Test
@@ -120,12 +118,12 @@ public class AmountTest {
         Double value2 = 10D;
 
         //when
-        assertEquals(1, value1.compareTo(value2));
+        assertThat(value1).isGreaterThan(value2);
 
         //then
         Amount amount1 = Amount.valueOf(value1);
         Amount amount2 = Amount.valueOf(value2);
-        assertTrue(amount1.isGreaterThan(amount2));
+        assertThat(amount1).isGreaterThan(amount2);
     }
 
     @Test
@@ -138,7 +136,7 @@ public class AmountTest {
         Amount result = amount1.add(amount2);
 
         //then
-        assertEquals(result, Amount.valueOf(30D));
+        assertThat(result).isEqualTo(Amount.valueOf(30D));
     }
 
     @Test
@@ -151,7 +149,7 @@ public class AmountTest {
         Amount result = amount1.subtract(amount2);
 
         //then
-        assertEquals(result, Amount.valueOf(10D));
+        assertThat(result).isEqualTo(Amount.valueOf(10D));
     }
 
     @Test
@@ -164,7 +162,7 @@ public class AmountTest {
         Amount result = amount.multiply(multiplier);
 
         //then
-        assertEquals(result, Amount.valueOf(40D));
+        assertThat(result).isEqualTo(Amount.valueOf(40D));
     }
 
     @Test
@@ -177,7 +175,7 @@ public class AmountTest {
         Amount result = amount.divide(division);
 
         //then
-        assertEquals(result, Amount.valueOf(10D));
+        assertThat(result).isEqualTo(Amount.valueOf(10D));
     }
 
     @Test
@@ -187,10 +185,12 @@ public class AmountTest {
         Double division = 0D;
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> amount.divide(division));
+        Throwable throwable = catchThrowable(() -> amount.divide(division));
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Divisor value can not be negative!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Divisor value can not be negative!");
     }
 }

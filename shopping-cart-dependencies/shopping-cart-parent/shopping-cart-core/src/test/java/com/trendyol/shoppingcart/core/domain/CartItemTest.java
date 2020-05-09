@@ -6,7 +6,8 @@ import com.trendyol.shoppingcart.core.domain.value.Title;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 public class CartItemTest {
 
@@ -17,12 +18,16 @@ public class CartItemTest {
         Quantity quantity = Quantity.valueOf(1);
 
         //when
-        assertNull(product);
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> new CartItem(product, quantity));
+        assertThat(product).isNull();
+        Throwable throwable = catchThrowable(() -> {
+            CartItem cartItem = new CartItem(product, quantity);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Product can not be null!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Product can not be null!");
     }
 
     @Test
@@ -32,12 +37,16 @@ public class CartItemTest {
         Quantity quantity = null;
 
         //when
-        assertNull(quantity);
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> new CartItem(product, quantity));
+        assertThat(quantity).isNull();
+        Throwable throwable = catchThrowable(() -> {
+            CartItem cartItem = new CartItem(product, quantity);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Quantity can not be null!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Quantity can not be null!");
     }
 
     @Test
@@ -47,11 +56,16 @@ public class CartItemTest {
         Quantity quantity = Quantity.valueOf(0);
 
         //when
-        InvalidValueException exception = assertThrows(InvalidValueException.class, () -> new CartItem(product, quantity));
+        assertThat(quantity).isNotNull();
+        Throwable throwable = catchThrowable(() -> {
+            CartItem cartItem = new CartItem(product, quantity);
+        });
 
         //then
-        assertNotNull(exception);
-        assertEquals(exception.getMessage(), "Quantity can not be zero!");
+        assertThat(throwable)
+                .isNotNull()
+                .isInstanceOf(InvalidValueException.class)
+                .hasMessage("Quantity can not be zero!");
     }
 
     @Test
@@ -64,9 +78,9 @@ public class CartItemTest {
         CartItem cartItem = new CartItem(product, quantity);
 
         //then
-        assertNotNull(cartItem);
-        assertEquals(cartItem.getProduct(), product);
-        assertEquals(cartItem.getQuantity(), quantity);
+        assertThat(cartItem).isNotNull();
+        assertThat(cartItem.getProduct()).isEqualTo(product);
+        assertThat(cartItem.getQuantity()).isEqualTo(quantity);
     }
 
     @Test
@@ -79,8 +93,8 @@ public class CartItemTest {
         CartItem cartItem = new CartItem(product, quantity);
 
         //then
-        assertNotNull(cartItem);
-        assertEquals(cartItem.getCategory(), product.getCategory());
+        assertThat(cartItem).isNotNull();
+        assertThat(cartItem.getCategory()).isEqualTo(product.getCategory());
     }
 
     @Test
@@ -93,8 +107,8 @@ public class CartItemTest {
         CartItem cartItem = new CartItem(product, quantity);
 
         //then
-        assertNotNull(cartItem);
-        assertEquals(cartItem.getUnitPrice(), product.getPrice());
+        assertThat(cartItem).isNotNull();
+        assertThat(cartItem.getUnitPrice()).isEqualTo(product.getPrice());
     }
 
     @Test
@@ -107,9 +121,8 @@ public class CartItemTest {
         CartItem cartItem = new CartItem(product, quantity);
 
         //then
-        assertNotNull(cartItem);
-        assertEquals(cartItem.getTotalPrice(), product.getPrice().multiply(quantity.doubleValue()));
-        assertEquals(cartItem.getTotalPrice(), Amount.valueOf(20D));
+        assertThat(cartItem).isNotNull();
+        assertThat(cartItem.getTotalPrice()).isEqualTo(product.getPrice().multiply(quantity.doubleValue())).isEqualTo(Amount.valueOf(20D));
     }
 
     @Test
@@ -124,10 +137,9 @@ public class CartItemTest {
         //when
         CartItem cartItem1 = new CartItem(product1, quantity1);
         CartItem cartItem2 = new CartItem(product2, quantity2);
-        boolean result = cartItem1.equals(cartItem2);
 
         //then
-        assertFalse(result);
+        assertThat(cartItem1).isNotEqualTo(cartItem2);
     }
 
     @Test
@@ -142,10 +154,9 @@ public class CartItemTest {
         //when
         CartItem cartItem1 = new CartItem(product1, quantity1);
         CartItem cartItem2 = new CartItem(product2, quantity2);
-        boolean result = cartItem1.equals(cartItem2);
 
         //then
-        assertFalse(result);
+        assertThat(cartItem1).isNotEqualTo(cartItem2);
     }
 
     @Test
@@ -160,14 +171,13 @@ public class CartItemTest {
         //when
         CartItem cartItem1 = new CartItem(product1, quantity1);
         CartItem cartItem2 = new CartItem(product2, quantity2);
-        boolean result = cartItem1.equals(cartItem2);
 
         //then
-        assertTrue(result);
+        assertThat(cartItem1).isEqualTo(cartItem2);
     }
 
     @Test
-    public void givenSameQuantitiesCartItem1ProductLesserThanCartItem2Product_whenCompareProducts_thenReturnNegative() {
+    public void givenSameQuantitiesCartItem1ProductLessThanCartItem2Product_whenCompareProducts_thenReturnNegative() {
         //given
         Product product1 = new Product(Title.valueOf("Product1"), Amount.valueOf(10D), new Category(Title.valueOf("Category")));
         Product product2 = new Product(Title.valueOf("Product2"), Amount.valueOf(10D), new Category(Title.valueOf("Category")));
@@ -177,14 +187,13 @@ public class CartItemTest {
         //when
         CartItem cartItem1 = new CartItem(product1, quantity1);
         CartItem cartItem2 = new CartItem(product2, quantity2);
-        int result = cartItem1.compareTo(cartItem2);
 
         //then
-        assertTrue(result < 0);
+        assertThat(cartItem1).isLessThan(cartItem2);
     }
 
     @Test
-    public void givenSameProductsCartItem1QuantityLesserThanCartItem2Quantity_whenCompareProducts_thenReturnNegative() {
+    public void givenSameProductsCartItem1QuantityLessThanCartItem2Quantity_whenCompareProducts_thenReturnNegative() {
         //given
         Product product1 = new Product(Title.valueOf("Product"), Amount.valueOf(10D), new Category(Title.valueOf("Category")));
         Product product2 = new Product(Title.valueOf("Product"), Amount.valueOf(10D), new Category(Title.valueOf("Category")));
@@ -194,10 +203,9 @@ public class CartItemTest {
         //when
         CartItem cartItem1 = new CartItem(product1, quantity1);
         CartItem cartItem2 = new CartItem(product2, quantity2);
-        int result = cartItem1.compareTo(cartItem2);
 
         //then
-        assertTrue(result < 0);
+        assertThat(cartItem1).isLessThan(cartItem2);
     }
 
     @Test
@@ -211,9 +219,7 @@ public class CartItemTest {
         cartItem.increaseQuantity(Quantity.valueOf(1));
 
         //then
-        assertEquals(cartItem.getQuantity(), Quantity.valueOf(2).add(Quantity.valueOf(1)));
-        assertEquals(cartItem.getQuantity(), Quantity.valueOf(3));
-
+        assertThat(cartItem.getQuantity()).isEqualTo(Quantity.valueOf(2).add(Quantity.valueOf(1))).isEqualTo(Quantity.valueOf(3));
     }
 
     @Test
@@ -227,16 +233,13 @@ public class CartItemTest {
         cartItem.calculateTotalPrice();
 
         //then
-        assertEquals(cartItem.getTotalPrice(), cartItem.getUnitPrice().multiply(cartItem.getQuantity().doubleValue()));
-        assertEquals(cartItem.getTotalPrice(), Amount.valueOf(10D));
+        assertThat(cartItem.getTotalPrice()).isEqualTo(cartItem.getUnitPrice().multiply(cartItem.getQuantity().doubleValue())).isEqualTo(Amount.valueOf(10D));
 
         //increase quantity by 1
         //when
         cartItem.increaseQuantity(Quantity.valueOf(1));
 
         //then
-        assertEquals(cartItem.getTotalPrice(), cartItem.getUnitPrice().multiply(cartItem.getQuantity().doubleValue()));
-        assertEquals(cartItem.getTotalPrice(), Amount.valueOf(20D));
-
+        assertThat(cartItem.getTotalPrice()).isEqualTo(cartItem.getUnitPrice().multiply(cartItem.getQuantity().doubleValue())).isEqualTo(Amount.valueOf(20D));
     }
 }
