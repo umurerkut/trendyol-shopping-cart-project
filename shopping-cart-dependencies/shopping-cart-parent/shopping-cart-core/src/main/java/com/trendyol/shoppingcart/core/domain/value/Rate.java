@@ -45,15 +45,15 @@ public final class Rate implements Comparable<Rate> {
         return this.value;
     }
 
-    public Boolean isZero() {
+    public boolean isZero() {
         return this.value == 0D;
     }
 
-    public Boolean isLessThan(Rate other) {
+    public boolean isLessThan(Rate other) {
         return this.value < other.doubleValue();
     }
 
-    public Boolean isGreaterThan(Rate other) {
+    public boolean isGreaterThan(Rate other) {
         return this.value > other.doubleValue();
     }
 

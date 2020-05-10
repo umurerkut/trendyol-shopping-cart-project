@@ -35,23 +35,23 @@ public final class Amount implements Comparable<Amount> {
         return this.value;
     }
 
-    public Boolean isNegative() {
+    public boolean isNegative() {
         return this.value < 0D;
     }
 
-    public Boolean isPositive() {
+    public boolean isPositive() {
         return this.value > 0D;
     }
 
-    public Boolean isZero() {
+    public boolean isZero() {
         return this.value == 0D;
     }
 
-    public Boolean isLessThan(Amount other) {
+    public boolean isLessThan(Amount other) {
         return this.value < other.doubleValue();
     }
 
-    public Boolean isGreaterThan(Amount other) {
+    public boolean isGreaterThan(Amount other) {
         return this.value > other.doubleValue();
     }
 

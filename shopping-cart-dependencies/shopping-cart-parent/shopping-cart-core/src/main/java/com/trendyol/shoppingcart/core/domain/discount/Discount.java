@@ -9,18 +9,18 @@ import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class Discount<V extends DiscountValidationStrategy, C extends DiscountCalculationStrategy> {
+public abstract class Discount {
 
-    private final static Logger logger = LoggerFactory.getLogger(Discount.class);
+    private static final Logger logger = LoggerFactory.getLogger(Discount.class);
 
     protected final DiscountName discountName;
-    protected final V validationStrategy;
-    protected final C calculationStrategy;
+    protected final DiscountValidationStrategy validationStrategy;
+    protected final DiscountCalculationStrategy calculationStrategy;
 
     protected Amount discountAmount;
 
 
-    public Discount(DiscountName discountName, V validationStrategy, C calculationStrategy) {
+    public Discount(DiscountName discountName, DiscountValidationStrategy validationStrategy, DiscountCalculationStrategy calculationStrategy) {
 
         if (discountName == null) {
             throw new InvalidValueException("Discount name an not be null!");
@@ -43,8 +43,8 @@ public abstract class Discount<V extends DiscountValidationStrategy, C extends D
     public void addTo(ShoppingCart shoppingCart) {
         if (validationStrategy.isValid(shoppingCart)) {
             this.discountAmount = calculationStrategy.calculateDiscountAmount(shoppingCart);
-            Discount<V, C> discount = shoppingCart.getDiscountMap().get(discountName);
-            if (this.isGreaterThan(discount)) {
+            Discount discount = shoppingCart.getDiscountMap().get(discountName);
+            if (isGreaterThan(discount)) {
                 shoppingCart.getDiscountMap().put(discountName, this);
             } else {
                 logger.info("{} overrides {}.", discount, this);
@@ -54,11 +54,11 @@ public abstract class Discount<V extends DiscountValidationStrategy, C extends D
         }
     }
 
-    public V getValidationStrategy() {
+    public DiscountValidationStrategy getValidationStrategy() {
         return validationStrategy;
     }
 
-    public C getCalculationStrategy() {
+    public DiscountCalculationStrategy getCalculationStrategy() {
         return calculationStrategy;
     }
 
@@ -100,5 +100,5 @@ public abstract class Discount<V extends DiscountValidationStrategy, C extends D
                 ", " + calculationStrategy;
     }
 
-    public abstract boolean isGreaterThan(Discount<V, C> other);
+    public abstract boolean isGreaterThan(Discount other);
 }

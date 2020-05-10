@@ -86,8 +86,8 @@ public class ProductTypeBasedMockDiscountTest {
         assertThat(discount).isNotNull();
         String discountNameText = (product.getTitle().getValue() + "_PRODUCT_TYPE_BASED_MOCK_DISCOUNT").replaceAll(" ", "_").toUpperCase();
         assertThat(discount.getDiscountName()).isEqualTo(DiscountName.valueOf(discountNameText));
-        assertThat(discount.calculationStrategy.getDiscountAmount()).isEqualTo(discountAmount);
-        assertThat(discount.validationStrategy.getProduct()).isEqualTo(product);
+        assertThat(discount.getCalculationStrategy().getDiscountAmount()).isEqualTo(discountAmount);
+        assertThat(discount.getValidationStrategy().getProduct()).isEqualTo(product);
     }
 
     @Test

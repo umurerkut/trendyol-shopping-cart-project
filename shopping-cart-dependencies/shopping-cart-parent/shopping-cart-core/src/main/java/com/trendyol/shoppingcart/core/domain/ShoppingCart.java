@@ -14,15 +14,14 @@ import java.util.stream.Collectors;
 
 public final class ShoppingCart implements DiscountProviderEventListener {
 
-    private final static Logger logger = LoggerFactory.getLogger(ShoppingCart.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShoppingCart.class);
+    private final Set<CartItem> cartItems = new LinkedHashSet<>();
+    private final Map<DiscountName, Discount> discountMap = new LinkedHashMap<>();
     private Long id;
     private Amount cartAmount;
     private Amount totalDiscount;
     private Amount deliveryCost;
     private Amount totalAmount;
-
-    private final Set<CartItem> cartItems = new LinkedHashSet<>();
-    private final Map<DiscountName, Discount> discountMap = new LinkedHashMap<>();
 
 
     public ShoppingCart() {
@@ -131,7 +130,7 @@ public final class ShoppingCart implements DiscountProviderEventListener {
         return Quantity.valueOf(cartItems.stream().map(CartItem::getCategory).collect(Collectors.toSet()).size());
     }
 
-    public Boolean containsProduct(Product product) {
+    public boolean containsProduct(Product product) {
         return cartItems.stream().anyMatch(cartItem -> cartItem.getProduct().equals(product));
     }
 
@@ -147,12 +146,12 @@ public final class ShoppingCart implements DiscountProviderEventListener {
         return deliveryCost;
     }
 
-    public Amount getTotalDiscount() {
-        return totalDiscount;
-    }
-
     public void setDeliveryCost(Amount deliveryCost) {
         this.deliveryCost = deliveryCost;
+    }
+
+    public Amount getTotalDiscount() {
+        return totalDiscount;
     }
 
     public Long getId() {

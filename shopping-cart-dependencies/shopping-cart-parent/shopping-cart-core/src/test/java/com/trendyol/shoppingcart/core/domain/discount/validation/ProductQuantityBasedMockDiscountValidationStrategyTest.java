@@ -71,7 +71,7 @@ public class ProductQuantityBasedMockDiscountValidationStrategyTest {
         //when
         ShoppingCart shoppingCart = mock(ShoppingCart.class);
         when(shoppingCart.getTotalQuantityOfProductsInCart()).thenReturn(Quantity.valueOf(6));
-        Boolean result = validationStrategy.isValid(shoppingCart);
+        boolean result = validationStrategy.isValid(shoppingCart);
 
         verify(shoppingCart, times(1)).getTotalQuantityOfProductsInCart();
         verifyNoMoreInteractions(shoppingCart);
@@ -90,7 +90,7 @@ public class ProductQuantityBasedMockDiscountValidationStrategyTest {
         //when
         ShoppingCart shoppingCart = mock(ShoppingCart.class);
         when(shoppingCart.getTotalQuantityOfProductsInCart()).thenReturn(Quantity.valueOf(1));
-        Boolean result = validationStrategy.isValid(shoppingCart);
+        boolean result = validationStrategy.isValid(shoppingCart);
 
         verify(shoppingCart, times(1)).getTotalQuantityOfProductsInCart();
         verifyNoMoreInteractions(shoppingCart);

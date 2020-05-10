@@ -18,7 +18,7 @@ public class ProductTypeBasedMockDiscountValidationStrategy implements DiscountV
 
     //If cart specific product, then apply discount
     @Override
-    public Boolean isValid(ShoppingCart shoppingCart) {
+    public boolean isValid(ShoppingCart shoppingCart) {
         return shoppingCart.getQuantityOfProductInCart(product).isGreaterThan(Quantity.ofZero());
     }
 

@@ -75,7 +75,7 @@ public class MockDiscountProviderTest {
         assertThat(mockDiscountProvider.getExpireTime()).isNull();
 
         //when
-        Boolean result = mockDiscountProvider.isValid();
+        boolean result = mockDiscountProvider.isValid();
 
         //then
         assertThat(result).isTrue();
@@ -92,7 +92,7 @@ public class MockDiscountProviderTest {
         assertThat(mockDiscountProvider.getExpireTime()).isNotNull();
 
         //when
-        Boolean result = mockDiscountProvider.isValid();
+        boolean result = mockDiscountProvider.isValid();
 
         //then
         assertThat(result).isTrue();
@@ -109,7 +109,7 @@ public class MockDiscountProviderTest {
         assertThat(mockDiscountProvider.getExpireTime()).isNotNull();
 
         //when
-        Boolean result = mockDiscountProvider.isValid();
+        boolean result = mockDiscountProvider.isValid();
 
         //then
         assertThat(result).isFalse();

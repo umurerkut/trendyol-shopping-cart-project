@@ -102,7 +102,7 @@ public class ProductTest {
         Product product = new Product(title, price, category);
 
         //then
-        assertThat(product);
+        assertThat(product).isNotNull();
         assertThat(product.getTitle()).isEqualTo(title);
         assertThat(product.getPrice()).isEqualTo(price);
         assertThat(product.getCategory()).isEqualTo(category);

@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public abstract class DiscountProviderItem implements DiscountProvider {
 
-    private final static Logger logger = LoggerFactory.getLogger(DiscountProviderItem.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiscountProviderItem.class);
 
     protected final List<DiscountProviderEventListener> discountProviderEventListenerList;
 
@@ -29,7 +29,7 @@ public abstract class DiscountProviderItem implements DiscountProvider {
         this.discount = discount;
     }
 
-    public abstract Boolean isValid();
+    public abstract boolean isValid();
 
     @Override
     public void provideDiscount() {

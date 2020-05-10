@@ -34,7 +34,7 @@ public class CategoryTest {
         Category category = new Category(parent, title);
 
         //then
-        assertThat(category);
+        assertThat(category).isNotNull();
         assertThat(category.getParent()).isNotNull();
         assertThat(category.getParent()).isEqualTo(parent);
         assertThat(category.getTitle()).isEqualTo(title);

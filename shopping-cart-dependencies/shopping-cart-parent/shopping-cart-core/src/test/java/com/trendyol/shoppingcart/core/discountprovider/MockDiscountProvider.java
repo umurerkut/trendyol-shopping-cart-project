@@ -18,7 +18,7 @@ public class MockDiscountProvider extends DiscountProviderItem {
     }
 
     @Override
-    public Boolean isValid() {
+    public boolean isValid() {
         if (expireTime == null) {
             return true;
         }

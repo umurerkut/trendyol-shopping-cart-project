@@ -10,7 +10,7 @@ import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import java.util.Comparator;
 
 //Mock discount: If more then or same number of minimumQuantityOfProducts items in cart, then apply discount amount of dismountAmount
-public class ProductQuantityBasedMockDiscount extends Discount<ProductQuantityBasedMockDiscountValidationStrategy, MockDiscountCalculationStrategy> {
+public class ProductQuantityBasedMockDiscount extends Discount {
 
     public ProductQuantityBasedMockDiscount(Quantity minimumQuantityOfProducts, Amount discountAmount) {
         super(discountName(), validationStrategy(minimumQuantityOfProducts), calculationStrategy(discountAmount));
@@ -44,7 +44,17 @@ public class ProductQuantityBasedMockDiscount extends Discount<ProductQuantityBa
     }
 
     @Override
-    public boolean isGreaterThan(Discount<ProductQuantityBasedMockDiscountValidationStrategy, MockDiscountCalculationStrategy> other) {
+    public MockDiscountCalculationStrategy getCalculationStrategy() {
+        return (MockDiscountCalculationStrategy) super.getCalculationStrategy();
+    }
+
+    @Override
+    public ProductQuantityBasedMockDiscountValidationStrategy getValidationStrategy() {
+        return (ProductQuantityBasedMockDiscountValidationStrategy) super.getValidationStrategy();
+    }
+
+    @Override
+    public boolean isGreaterThan(Discount other) {
         if (other == null) {
             return true;
         }

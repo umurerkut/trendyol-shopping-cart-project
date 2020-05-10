@@ -20,7 +20,7 @@ public class ProductQuantityBasedMockDiscountValidationStrategy implements Disco
 
     //If cart has more than minimumQuantityOfProducts items, then apply discount
     @Override
-    public Boolean isValid(ShoppingCart shoppingCart) {
+    public boolean isValid(ShoppingCart shoppingCart) {
         Quantity totalQuantityOfProductsInCart = shoppingCart.getTotalQuantityOfProductsInCart();
         return totalQuantityOfProductsInCart.isGreaterThan(minimumQuantityOfProducts)
                 || totalQuantityOfProductsInCart.equals(minimumQuantityOfProducts);

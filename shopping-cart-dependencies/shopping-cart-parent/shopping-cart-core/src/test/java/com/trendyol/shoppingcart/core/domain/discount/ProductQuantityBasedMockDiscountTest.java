@@ -102,8 +102,8 @@ public class ProductQuantityBasedMockDiscountTest {
         //then
         assertThat(discount).isNotNull();
         assertThat(discount.getDiscountName()).isEqualTo(DiscountName.valueOf("PRODUCT_QUANTITY_BASED_MOCK_DISCOUNT"));
-        assertThat(discount.calculationStrategy.getDiscountAmount()).isEqualTo(discountAmount);
-        assertThat(discount.validationStrategy.getMinimumQuantityOfProducts()).isEqualTo(minimumQuantityOfProducts);
+        assertThat(discount.getCalculationStrategy().getDiscountAmount()).isEqualTo(discountAmount);
+        assertThat(discount.getValidationStrategy().getMinimumQuantityOfProducts()).isEqualTo(minimumQuantityOfProducts);
     }
 
     @Test

@@ -59,15 +59,15 @@ public final class Quantity implements Comparable<Quantity> {
         return this.value.doubleValue();
     }
 
-    public Boolean isZero() {
+    public boolean isZero() {
         return this.value == 0;
     }
 
-    public Boolean isLessThan(Quantity other) {
+    public boolean isLessThan(Quantity other) {
         return this.value < other.intValue();
     }
 
-    public Boolean isGreaterThan(Quantity other) {
+    public boolean isGreaterThan(Quantity other) {
         return this.value > other.intValue();
     }
 
