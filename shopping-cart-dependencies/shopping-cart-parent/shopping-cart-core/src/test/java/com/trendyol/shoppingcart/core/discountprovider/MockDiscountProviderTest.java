@@ -190,7 +190,7 @@ public class MockDiscountProviderTest {
         //then
         assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).hasSize(1);
         assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).contains(shoppingCart);
-        verify(shoppingCart, times(1)).discountProvided(ArgumentMatchers.any());
+        verify(shoppingCart, times(1)).discountProvided(ArgumentMatchers.any(DiscountProvidedEvent.class));
     }
 
     @Test
@@ -213,7 +213,7 @@ public class MockDiscountProviderTest {
         //then
         assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).hasSize(1);
         assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).contains(shoppingCart);
-        verify(shoppingCart, never()).discountProvided(ArgumentMatchers.any());
+        verify(shoppingCart, never()).discountProvided(ArgumentMatchers.any(DiscountProvidedEvent.class));
     }
 
 }
