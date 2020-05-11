@@ -1,4 +1,4 @@
-package com.trendyol.shoppingcart.core.domain.discount.calculation;
+package com.trendyol.shoppingcart.client.mock.discount.calculation;
 
 import com.trendyol.shoppingcart.core.domain.ShoppingCart;
 import com.trendyol.shoppingcart.core.domain.value.Amount;

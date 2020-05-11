@@ -1,4 +1,4 @@
-package com.trendyol.shoppingcart.core.domain.discount.validation;
+package com.trendyol.shoppingcart.client.mock.discount.validation;
 
 import com.trendyol.shoppingcart.core.domain.Category;
 import com.trendyol.shoppingcart.core.domain.Product;

@@ -1,9 +1,10 @@
-package com.trendyol.shoppingcart.core.domain.discount;
+package com.trendyol.shoppingcart.client.mock.discount;
 
 import com.trendyol.shoppingcart.core.domain.value.Amount;
 import com.trendyol.shoppingcart.core.domain.value.DiscountName;
 import com.trendyol.shoppingcart.core.domain.value.Quantity;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -119,7 +120,7 @@ public class ProductQuantityBasedMockDiscountTest {
         assertThat(discountAmount).isNotNull();
         assertThat(quantity1).isNotNull();
         assertThat(quantity2).isNotNull();
-        assertThat(quantity1.isGreaterThan(quantity2)).isTrue();
+        Assertions.assertThat(quantity1.isGreaterThan(quantity2)).isTrue();
 
         //then
         assertThat(discount1.isGreaterThan(discount2)).isTrue();

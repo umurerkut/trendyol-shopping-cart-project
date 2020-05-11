@@ -27,12 +27,17 @@
             </dependency>
             <dependency>
                 <groupId>com.trendyol</groupId>
-                <artifactId>shoppingcart-core</artifactId>
+                <artifactId>shopping-cart-core</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.trendyol</groupId>
-                <artifactId>shoppingcart-trendyol-client</artifactId>
+                <artifactId>shopping-cart-client-mock</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.trendyol</groupId>
+                <artifactId>shopping-cart-client-trendyol</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>

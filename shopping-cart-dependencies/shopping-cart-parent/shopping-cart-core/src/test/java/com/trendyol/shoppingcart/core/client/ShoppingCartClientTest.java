@@ -8,9 +8,9 @@ import com.trendyol.shoppingcart.core.domain.value.Amount;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import com.trendyol.shoppingcart.core.service.DeliveryCostService;
 import com.trendyol.shoppingcart.core.service.ShoppingCartService;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -27,7 +27,8 @@ public class ShoppingCartClientTest {
         assertThat(shoppingCartService).isNotNull();
 
         //when
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+        ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
 
         //then
         assertThat(shoppingCartClient).isNotNull();
@@ -45,11 +46,13 @@ public class ShoppingCartClientTest {
 
         //when
         Throwable throwable = catchThrowable(() -> {
-            ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+            ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                    .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
         });
 
         //then
-        assertThat(throwable)
+        Throwable root = ExceptionUtils.getRootCause(throwable);
+        assertThat(root)
                 .isNotNull()
                 .isInstanceOf(InvalidValueException.class)
                 .hasMessage("Shopping cart service can not be null!");
@@ -64,59 +67,13 @@ public class ShoppingCartClientTest {
         assertThat(shoppingCartService).isNotNull();
 
         //when
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+        ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
 
         //then
         assertThat(shoppingCartClient).isNotNull();
         assertThat(shoppingCartClient.getDeliveryCostService()).isNotNull().isEqualTo(deliveryCostService);
         assertThat(shoppingCartClient.getShoppingCartService()).isNotNull().isEqualTo(shoppingCartService);
-    }
-
-    @Test
-    public void givenValidShoppingCartClient_whenProvideDiscounts_thenRegisterShoppingCartAsListenerProvideDiscountsToAllChildProviders() {
-        //given
-        DeliveryCostService deliveryCostService = mock(DeliveryCostService.class);
-        ShoppingCartService shoppingCartService = mock(ShoppingCartService.class);
-        assertThat(deliveryCostService).isNotNull();
-        assertThat(shoppingCartService).isNotNull();
-
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
-        assertThat(shoppingCartClient).isNotNull();
-
-        DiscountProviderGroup discountProviderGroup = new DiscountProviderGroup();
-        DiscountProvider discountProvider1 = mock(DiscountProvider.class);
-        DiscountProvider discountProvider2 = mock(DiscountProvider.class);
-        DiscountProviderItem discountProviderItem1 = mock(DiscountProviderItem.class);
-        DiscountProviderItem discountProviderItem2 = mock(DiscountProviderItem.class);
-        DiscountProviderGroup childGroup1 = mock(DiscountProviderGroup.class);
-        DiscountProviderGroup childGroup2 = mock(DiscountProviderGroup.class);
-
-        discountProviderGroup.addDiscountProvider(discountProvider1);
-        discountProviderGroup.addDiscountProvider(discountProvider2);
-        discountProviderGroup.addDiscountProvider(discountProviderItem1);
-        discountProviderGroup.addDiscountProvider(discountProviderItem2);
-        discountProviderGroup.addDiscountProvider(childGroup1);
-        discountProviderGroup.addDiscountProvider(childGroup2);
-
-        ShoppingCart shoppingCart = mock(ShoppingCart.class);
-        assertThat(shoppingCart).isNotNull();
-
-        shoppingCartClient.provideDiscounts(shoppingCart, discountProviderGroup);
-
-        //then
-        verify(discountProvider1, times(1)).registerDiscountProviderEventListener(ArgumentMatchers.eq(shoppingCart));
-        verify(discountProvider2, times(1)).registerDiscountProviderEventListener(ArgumentMatchers.eq(shoppingCart));
-        verify(discountProviderItem1, times(1)).registerDiscountProviderEventListener(ArgumentMatchers.eq(shoppingCart));
-        verify(discountProviderItem2, times(1)).registerDiscountProviderEventListener(ArgumentMatchers.eq(shoppingCart));
-        verify(childGroup1, times(1)).registerDiscountProviderEventListener(ArgumentMatchers.eq(shoppingCart));
-        verify(childGroup2, times(1)).registerDiscountProviderEventListener(ArgumentMatchers.eq(shoppingCart));
-
-        verify(discountProvider1, times(1)).provideDiscount();
-        verify(discountProvider2, times(1)).provideDiscount();
-        verify(discountProviderItem1, times(1)).provideDiscount();
-        verify(discountProviderItem2, times(1)).provideDiscount();
-        verify(childGroup1, times(1)).provideDiscount();
-        verify(childGroup2, times(1)).provideDiscount();
     }
 
     @Test
@@ -131,7 +88,8 @@ public class ShoppingCartClientTest {
         assertThat(deliveryCostService).isNotNull();
         assertThat(shoppingCartService).isNotNull();
 
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+        ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
         assertThat(shoppingCartClient).isNotNull();
 
         DiscountProviderGroup discountProviderGroup = new DiscountProviderGroup();
@@ -150,7 +108,8 @@ public class ShoppingCartClientTest {
         discountProviderGroup.addDiscountProvider(childGroup2);
 
         //when
-        shoppingCartClient.submitCart(shoppingCart, discountProviderGroup);
+        shoppingCartClient.getRuleDiscountProvider().addDiscountProvider(discountProviderGroup);
+        shoppingCartClient.submitCart(shoppingCart);
 
         //then
         verify(shoppingCart, times(1)).applyDiscounts();
@@ -168,7 +127,8 @@ public class ShoppingCartClientTest {
         ShoppingCartService shoppingCartService = mock(ShoppingCartService.class);
         assertThat(shoppingCartService).isNotNull();
 
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+        ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
         assertThat(shoppingCartClient).isNotNull();
 
         DiscountProviderGroup discountProviderGroup = new DiscountProviderGroup();
@@ -191,7 +151,8 @@ public class ShoppingCartClientTest {
         doCallRealMethod().when(shoppingCart).setDeliveryCost(any(Amount.class));
         when(deliveryCostService.calculateFor(any(ShoppingCart.class))).thenReturn(Amount.valueOf(10D));
         when(shoppingCartService.save(any(ShoppingCart.class))).thenReturn(shoppingCart);
-        shoppingCartClient.submitCart(shoppingCart, discountProviderGroup);
+        shoppingCartClient.getRuleDiscountProvider().addDiscountProvider(discountProviderGroup);
+        shoppingCartClient.submitCart(shoppingCart);
 
         //then
         verify(shoppingCart, times(1)).setDeliveryCost(any(Amount.class));
@@ -210,7 +171,8 @@ public class ShoppingCartClientTest {
         ShoppingCartService shoppingCartService = mock(ShoppingCartService.class);
         assertThat(shoppingCartService).isNotNull();
 
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+        ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
         assertThat(shoppingCartClient).isNotNull();
 
         DiscountProviderGroup discountProviderGroup = new DiscountProviderGroup();
@@ -232,7 +194,8 @@ public class ShoppingCartClientTest {
         when(shoppingCart.getDeliveryCost()).thenCallRealMethod();
         doCallRealMethod().when(shoppingCart).setDeliveryCost(any(Amount.class));
         when(shoppingCartService.save(any(ShoppingCart.class))).thenReturn(shoppingCart);
-        shoppingCartClient.submitCart(shoppingCart, discountProviderGroup);
+        shoppingCartClient.getRuleDiscountProvider().addDiscountProvider(discountProviderGroup);
+        shoppingCartClient.submitCart(shoppingCart);
 
         //then
         verify(shoppingCart, never()).setDeliveryCost(any(Amount.class));
@@ -250,7 +213,8 @@ public class ShoppingCartClientTest {
         assertThat(deliveryCostService).isNotNull();
         assertThat(shoppingCartService).isNotNull();
 
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+        ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
         assertThat(shoppingCartClient).isNotNull();
 
         DiscountProviderGroup discountProviderGroup = new DiscountProviderGroup();
@@ -269,7 +233,8 @@ public class ShoppingCartClientTest {
         discountProviderGroup.addDiscountProvider(childGroup2);
 
         //when
-        shoppingCartClient.submitCart(shoppingCart, discountProviderGroup);
+        shoppingCartClient.getRuleDiscountProvider().addDiscountProvider(discountProviderGroup);
+        shoppingCartClient.submitCart(shoppingCart);
 
         //then
         verify(shoppingCart, times(1)).print();
@@ -287,7 +252,8 @@ public class ShoppingCartClientTest {
         assertThat(deliveryCostService).isNotNull();
         assertThat(shoppingCartService).isNotNull();
 
-        ShoppingCartClient shoppingCartClient = new ShoppingCartClient(deliveryCostService, shoppingCartService);
+        ShoppingCartClient shoppingCartClient = mock(ShoppingCartClient.class, withSettings()
+                .useConstructor(deliveryCostService, shoppingCartService).defaultAnswer(CALLS_REAL_METHODS));
         assertThat(shoppingCartClient).isNotNull();
 
         DiscountProviderGroup discountProviderGroup = new DiscountProviderGroup();
@@ -306,7 +272,8 @@ public class ShoppingCartClientTest {
         discountProviderGroup.addDiscountProvider(childGroup2);
 
         //when
-        shoppingCartClient.submitCart(shoppingCart, discountProviderGroup);
+        shoppingCartClient.getRuleDiscountProvider().addDiscountProvider(discountProviderGroup);
+        shoppingCartClient.submitCart(shoppingCart);
 
         //then
         ArgumentCaptor<ShoppingCart> argumentCaptor = ArgumentCaptor.forClass(ShoppingCart.class);

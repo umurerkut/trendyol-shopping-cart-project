@@ -1,15 +1,17 @@
 package com.trendyol.shoppingcart.core.client;
 
-import com.trendyol.shoppingcart.core.discountprovider.DiscountProvider;
+import com.trendyol.shoppingcart.core.discountprovider.DiscountProviderGroup;
 import com.trendyol.shoppingcart.core.domain.ShoppingCart;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 import com.trendyol.shoppingcart.core.service.DeliveryCostService;
 import com.trendyol.shoppingcart.core.service.ShoppingCartService;
 
-public class ShoppingCartClient {
+public abstract class ShoppingCartClient {
 
     protected final DeliveryCostService deliveryCostService;
     protected final ShoppingCartService shoppingCartService;
+
+    protected final DiscountProviderGroup ruleDiscountProvider = new DiscountProviderGroup();
 
     public ShoppingCartClient(ShoppingCartService shoppingCartService) {
         this(null, shoppingCartService);
@@ -23,18 +25,16 @@ public class ShoppingCartClient {
         this.shoppingCartService = shoppingCartService;
     }
 
-    public void provideDiscounts(ShoppingCart shoppingCart, DiscountProvider discountProvider) {
-        if (discountProvider != null) {
-            discountProvider.registerDiscountProviderEventListener(shoppingCart);
-            discountProvider.provideDiscount();
-        }
+    private void provideDiscounts(ShoppingCart shoppingCart) {
+        ruleDiscountProvider.registerDiscountProviderEventListener(shoppingCart);
+        ruleDiscountProvider.provideDiscount();
     }
 
-    public void submitCart(ShoppingCart shoppingCart, DiscountProvider discountProvider) {
+    public void submitCart(ShoppingCart shoppingCart) {
         if (shoppingCart == null) {
             throw new InvalidValueException("Shopping cart can not be null!");
         }
-        provideDiscounts(shoppingCart, discountProvider);
+        provideDiscounts(shoppingCart);
         shoppingCart.applyDiscounts();
         if (deliveryCostService != null) {
             shoppingCart.setDeliveryCost(deliveryCostService.calculateFor(shoppingCart));
@@ -49,5 +49,9 @@ public class ShoppingCartClient {
 
     public ShoppingCartService getShoppingCartService() {
         return shoppingCartService;
+    }
+
+    public DiscountProviderGroup getRuleDiscountProvider() {
+        return ruleDiscountProvider;
     }
 }

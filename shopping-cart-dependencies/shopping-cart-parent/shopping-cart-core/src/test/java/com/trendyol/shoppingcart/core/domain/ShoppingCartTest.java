@@ -1,9 +1,11 @@
 package com.trendyol.shoppingcart.core.domain;
 
 import com.trendyol.shoppingcart.core.discountprovider.listener.DiscountProvidedEvent;
-import com.trendyol.shoppingcart.core.domain.discount.ProductQuantityBasedMockDiscount;
-import com.trendyol.shoppingcart.core.domain.discount.ProductTypeBasedMockDiscount;
+import com.trendyol.shoppingcart.core.domain.discount.Discount;
+import com.trendyol.shoppingcart.core.domain.discount.calculation.DiscountCalculationStrategy;
+import com.trendyol.shoppingcart.core.domain.discount.validation.DiscountValidationStrategy;
 import com.trendyol.shoppingcart.core.domain.value.Amount;
+import com.trendyol.shoppingcart.core.domain.value.DiscountName;
 import com.trendyol.shoppingcart.core.domain.value.Quantity;
 import com.trendyol.shoppingcart.core.domain.value.Title;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.Mockito.*;
 
 public class ShoppingCartTest {
 
@@ -230,12 +233,30 @@ public class ShoppingCartTest {
 
         shoppingCart.addProduct(product, quantity);
 
-        //Mock discount: If more then x items in cart, then apply discount amount of y
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount = new ProductQuantityBasedMockDiscount(Quantity.valueOf(5), Amount.valueOf(10D));
-        DiscountProvidedEvent event = new DiscountProvidedEvent(productQuantityBasedMockDiscount);
+        //Mock discount: If >= 5 items in cart, then apply discount amount of 10
+        DiscountName discountName = DiscountName.valueOf("MOCK");
+        assertThat(discountName).isNotNull();
+
+        DiscountCalculationStrategy discountCalculationStrategy = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy).isNotNull();
+        when(discountCalculationStrategy.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(10D));
+
+        DiscountValidationStrategy discountValidationStrategy = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy).isNotNull();
+        assertThat(shoppingCart.getTotalQuantityOfProductsInCart()).isGreaterThanOrEqualTo(Quantity.valueOf(5));
+        when(discountValidationStrategy.isValid(shoppingCart)).thenReturn(true);
+
+        Discount discount = mock(Discount.class, withSettings()
+                .useConstructor(discountName, discountValidationStrategy, discountCalculationStrategy)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount).isNotNull();
+        when(discount.isGreaterThan(null)).thenReturn(true);
+
+        DiscountProvidedEvent event = mock(DiscountProvidedEvent.class);
+        assertThat(event).isNotNull();
+        when(event.getDiscount()).thenReturn(discount);
 
         //when
-        assertThat(event).isNotNull();
         shoppingCart.discountProvided(event);
         shoppingCart.applyDiscounts();
 
@@ -265,12 +286,30 @@ public class ShoppingCartTest {
 
         shoppingCart.addProduct(product, quantity);
 
-        //Mock discount: If more then x items in cart, then apply discount amount of y
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount = new ProductQuantityBasedMockDiscount(Quantity.valueOf(5), Amount.valueOf(10D));
-        DiscountProvidedEvent event = new DiscountProvidedEvent(productQuantityBasedMockDiscount);
+        //Mock discount: If >= 5 items in cart, then apply discount amount of 10
+        DiscountName discountName = DiscountName.valueOf("MOCK");
+        assertThat(discountName).isNotNull();
+
+        DiscountCalculationStrategy discountCalculationStrategy = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy).isNotNull();
+        when(discountCalculationStrategy.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(10D));
+
+        DiscountValidationStrategy discountValidationStrategy = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy).isNotNull();
+        assertThat(shoppingCart.getTotalQuantityOfProductsInCart()).isGreaterThanOrEqualTo(Quantity.valueOf(5));
+        when(discountValidationStrategy.isValid(shoppingCart)).thenReturn(true);
+
+        Discount discount = mock(Discount.class, withSettings()
+                .useConstructor(discountName, discountValidationStrategy, discountCalculationStrategy)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount).isNotNull();
+        when(discount.isGreaterThan(null)).thenReturn(true);
+
+        DiscountProvidedEvent event = mock(DiscountProvidedEvent.class);
+        assertThat(event).isNotNull();
+        when(event.getDiscount()).thenReturn(discount);
 
         //when
-        assertThat(event).isNotNull();
         shoppingCart.discountProvided(event);
         shoppingCart.applyDiscounts();
 
@@ -304,22 +343,80 @@ public class ShoppingCartTest {
         shoppingCart.addProduct(product1, quantity1);
         shoppingCart.addProduct(product2, quantity2);
 
-        //Mock discount: If greater equals then x items in cart, then apply discount amount of y
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount1 = new ProductQuantityBasedMockDiscount(Quantity.valueOf(5), Amount.valueOf(10D));
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount2 = new ProductQuantityBasedMockDiscount(Quantity.valueOf(10), Amount.valueOf(15D));
-        DiscountProvidedEvent event1 = new DiscountProvidedEvent(productQuantityBasedMockDiscount1);
-        DiscountProvidedEvent event2 = new DiscountProvidedEvent(productQuantityBasedMockDiscount2);
+        //Mock discount 1: If >= 5 items in cart, then apply discount amount of 10
+        //Mock discount 2: If >= 10 items in cart, then apply discount amount of 15
+        DiscountName quantityBasedDiscount = DiscountName.valueOf("QuantityBasedDiscount");
+        assertThat(quantityBasedDiscount).isNotNull();
 
-        //Mock discount: If specific product x exists in cart, then apply discount amount of y
-        ProductTypeBasedMockDiscount productTypeBasedMockDiscount = new ProductTypeBasedMockDiscount(product2, Amount.valueOf(10D));
-        DiscountProvidedEvent event3 = new DiscountProvidedEvent(productTypeBasedMockDiscount);
+        DiscountCalculationStrategy discountCalculationStrategy1 = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy1).isNotNull();
+        when(discountCalculationStrategy1.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(10D));
+
+        DiscountCalculationStrategy discountCalculationStrategy2 = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy2).isNotNull();
+        when(discountCalculationStrategy2.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(15D));
+
+        DiscountValidationStrategy discountValidationStrategy1 = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy1).isNotNull();
+        doAnswer(invocationOnMock -> shoppingCart.getTotalQuantityOfProductsInCart().isGreaterThan(Quantity.valueOf(5))
+                || shoppingCart.getTotalQuantityOfProductsInCart().equals(Quantity.valueOf(5)))
+                .when(discountValidationStrategy1).isValid(shoppingCart);
+
+        DiscountValidationStrategy discountValidationStrategy2 = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy2).isNotNull();
+        doAnswer(invocationOnMock -> shoppingCart.getTotalQuantityOfProductsInCart().isGreaterThan(Quantity.valueOf(10))
+                || shoppingCart.getTotalQuantityOfProductsInCart().equals(Quantity.valueOf(10)))
+                .when(discountValidationStrategy2).isValid(shoppingCart);
+
+        Discount discount1 = mock(Discount.class, withSettings()
+                .useConstructor(quantityBasedDiscount, discountValidationStrategy1, discountCalculationStrategy1)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount1).isNotNull();
+        Discount discount2 = mock(Discount.class, withSettings()
+                .useConstructor(quantityBasedDiscount, discountValidationStrategy2, discountCalculationStrategy2)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount2).isNotNull();
+
+        when(discount1.isGreaterThan(null)).thenReturn(true);
+        when(discount2.isGreaterThan(null)).thenReturn(true);
+        when(discount1.isGreaterThan(discount2)).thenReturn(false);
+        when(discount2.isGreaterThan(discount1)).thenReturn(true);
+
+        DiscountProvidedEvent event1 = mock(DiscountProvidedEvent.class);
+        assertThat(event1).isNotNull();
+        when(event1.getDiscount()).thenReturn(discount1);
+
+        DiscountProvidedEvent event2 = mock(DiscountProvidedEvent.class);
+        assertThat(event2).isNotNull();
+        when(event2.getDiscount()).thenReturn(discount2);
+
+        //Mock discount3: If Product1 exists in cart, then apply discount amount of 10
+        DiscountName specificProductBasedDiscount = DiscountName.valueOf("Product1ExistenceBasedDiscount");
+        assertThat(specificProductBasedDiscount).isNotNull();
+
+        DiscountCalculationStrategy discountCalculationStrategy3 = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy3).isNotNull();
+        when(discountCalculationStrategy3.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(10D));
+
+        DiscountValidationStrategy discountValidationStrategy3 = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy3).isNotNull();
+        doAnswer(invocationOnMock -> shoppingCart.getQuantityOfProductInCart(product1).isGreaterThan(Quantity.valueOf(2))
+                || shoppingCart.getQuantityOfProductInCart(product1).equals(Quantity.valueOf(2)))
+                .when(discountValidationStrategy3).isValid(shoppingCart);
+
+        Discount discount3 = mock(Discount.class, withSettings()
+                .useConstructor(specificProductBasedDiscount, discountValidationStrategy3, discountCalculationStrategy3)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount3).isNotNull();
+        when(discount3.isGreaterThan(null)).thenReturn(true);
+
+        DiscountProvidedEvent event3 = mock(DiscountProvidedEvent.class);
+        assertThat(event3).isNotNull();
+        when(event3.getDiscount()).thenReturn(discount3);
 
         //when
-        assertThat(event1).isNotNull();
         shoppingCart.discountProvided(event1);
-        assertThat(event2).isNotNull();
         shoppingCart.discountProvided(event2);
-        assertThat(event3).isNotNull();
         shoppingCart.discountProvided(event3);
 
         shoppingCart.applyDiscounts();
@@ -334,7 +431,7 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void givenShoppingCart_whenDiscountProvidedAndDiscountAmountIsGreaterThanCartAmount_thenAmpplyDiscountAndZeroCartAmount() {
+    public void givenShoppingCart_whenDiscountProvidedAndDiscountAmountIsGreaterThanCartAmount_thenApplyDiscountAndZeroCartAmount() {
         //given
         ShoppingCart shoppingCart = new ShoppingCart();
         Category category = new Category(Title.valueOf("Category"));
@@ -347,12 +444,31 @@ public class ShoppingCartTest {
 
         shoppingCart.addProduct(product, quantity);
 
-        //Mock discount: If more then x items in cart, then apply discount amount of y
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount = new ProductQuantityBasedMockDiscount(Quantity.valueOf(5), Amount.valueOf(10D));
-        DiscountProvidedEvent event = new DiscountProvidedEvent(productQuantityBasedMockDiscount);
+        //Mock discount: If >= 5 items in cart, then apply discount amount of 10
+        DiscountName discountName = DiscountName.valueOf("MOCK");
+        assertThat(discountName).isNotNull();
+
+        DiscountCalculationStrategy discountCalculationStrategy = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy).isNotNull();
+        when(discountCalculationStrategy.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(10D));
+
+        DiscountValidationStrategy discountValidationStrategy = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy).isNotNull();
+        assertThat(shoppingCart.getTotalQuantityOfProductsInCart()).isGreaterThanOrEqualTo(Quantity.valueOf(5));
+        when(discountValidationStrategy.isValid(shoppingCart)).thenReturn(true);
+
+        Discount discount = mock(Discount.class, withSettings()
+                .useConstructor(discountName, discountValidationStrategy, discountCalculationStrategy)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount).isNotNull();
+        when(discount.isGreaterThan(null)).thenReturn(true);
+
+        DiscountProvidedEvent event = mock(DiscountProvidedEvent.class);
+        assertThat(event).isNotNull();
+        when(event.getDiscount()).thenReturn(discount);
 
         //when
-        assertThat(event).isNotNull();
+
         shoppingCart.discountProvided(event);
         shoppingCart.applyDiscounts();
 
@@ -379,18 +495,56 @@ public class ShoppingCartTest {
 
         shoppingCart.addProduct(product, quantity);
 
-        //Mock discount: If greater equals then x items in cart, then apply discount amount of y
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount1 = new ProductQuantityBasedMockDiscount(Quantity.valueOf(5), Amount.valueOf(10D));
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount2 = new ProductQuantityBasedMockDiscount(Quantity.valueOf(10), Amount.valueOf(15D));
-        DiscountProvidedEvent event1 = new DiscountProvidedEvent(productQuantityBasedMockDiscount1);
-        DiscountProvidedEvent event2 = new DiscountProvidedEvent(productQuantityBasedMockDiscount2);
+        //Mock discount 1: If >= 5 items in cart, then apply discount amount of 10
+        //Mock discount 2: If >= 10 items in cart, then apply discount amount of 15
+        DiscountName quantityBasedDiscount = DiscountName.valueOf("QuantityBasedDiscount");
+        assertThat(quantityBasedDiscount).isNotNull();
+
+        DiscountCalculationStrategy discountCalculationStrategy1 = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy1).isNotNull();
+        when(discountCalculationStrategy1.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(10D));
+
+        DiscountCalculationStrategy discountCalculationStrategy2 = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy2).isNotNull();
+        when(discountCalculationStrategy2.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(15D));
+
+        DiscountValidationStrategy discountValidationStrategy1 = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy1).isNotNull();
+        doAnswer(invocationOnMock -> shoppingCart.getTotalQuantityOfProductsInCart().isGreaterThan(Quantity.valueOf(5))
+                || shoppingCart.getTotalQuantityOfProductsInCart().equals(Quantity.valueOf(5)))
+                .when(discountValidationStrategy1).isValid(shoppingCart);
+
+        DiscountValidationStrategy discountValidationStrategy2 = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy2).isNotNull();
+        doAnswer(invocationOnMock -> shoppingCart.getTotalQuantityOfProductsInCart().isGreaterThan(Quantity.valueOf(10))
+                || shoppingCart.getTotalQuantityOfProductsInCart().equals(Quantity.valueOf(10)))
+                .when(discountValidationStrategy2).isValid(shoppingCart);
+
+        Discount discount1 = mock(Discount.class, withSettings()
+                .useConstructor(quantityBasedDiscount, discountValidationStrategy1, discountCalculationStrategy1)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount1).isNotNull();
+        Discount discount2 = mock(Discount.class, withSettings()
+                .useConstructor(quantityBasedDiscount, discountValidationStrategy2, discountCalculationStrategy2)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount2).isNotNull();
+
+        when(discount1.isGreaterThan(null)).thenReturn(true);
+        when(discount2.isGreaterThan(null)).thenReturn(true);
+        when(discount1.isGreaterThan(discount2)).thenReturn(false);
+        when(discount2.isGreaterThan(discount1)).thenReturn(true);
+
+        DiscountProvidedEvent event1 = mock(DiscountProvidedEvent.class);
+        assertThat(event1).isNotNull();
+        when(event1.getDiscount()).thenReturn(discount1);
+
+        DiscountProvidedEvent event2 = mock(DiscountProvidedEvent.class);
+        assertThat(event2).isNotNull();
+        when(event2.getDiscount()).thenReturn(discount2);
 
         //when
-        assertThat(event1).isNotNull();
         shoppingCart.discountProvided(event1);
-        assertThat(event2).isNotNull();
         shoppingCart.discountProvided(event2);
-
         shoppingCart.applyDiscounts();
 
         //then
@@ -424,11 +578,29 @@ public class ShoppingCartTest {
 
         shoppingCart.addProduct(product, quantity);
 
-        //Mock discount: If more then x items in cart, then apply discount amount of y
-        ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount = new ProductQuantityBasedMockDiscount(Quantity.valueOf(5), Amount.valueOf(10D));
-        DiscountProvidedEvent event = new DiscountProvidedEvent(productQuantityBasedMockDiscount);
+        //Mock discount: If >= 5 items in cart, then apply discount amount of 10
+        DiscountName discountName = DiscountName.valueOf("MOCK");
+        assertThat(discountName).isNotNull();
 
+        DiscountCalculationStrategy discountCalculationStrategy = mock(DiscountCalculationStrategy.class);
+        assertThat(discountCalculationStrategy).isNotNull();
+        when(discountCalculationStrategy.calculateDiscountAmount(shoppingCart)).thenReturn(Amount.valueOf(10D));
+
+        DiscountValidationStrategy discountValidationStrategy = mock(DiscountValidationStrategy.class);
+        assertThat(discountValidationStrategy).isNotNull();
+        assertThat(shoppingCart.getTotalQuantityOfProductsInCart()).isGreaterThanOrEqualTo(Quantity.valueOf(5));
+        when(discountValidationStrategy.isValid(shoppingCart)).thenReturn(true);
+
+        Discount discount = mock(Discount.class, withSettings()
+                .useConstructor(discountName, discountValidationStrategy, discountCalculationStrategy)
+                .defaultAnswer(CALLS_REAL_METHODS));
+        assertThat(discount).isNotNull();
+        when(discount.isGreaterThan(null)).thenReturn(true);
+
+        DiscountProvidedEvent event = mock(DiscountProvidedEvent.class);
         assertThat(event).isNotNull();
+        when(event.getDiscount()).thenReturn(discount);
+
         shoppingCart.discountProvided(event);
         shoppingCart.applyDiscounts();
 
@@ -455,7 +627,7 @@ public class ShoppingCartTest {
                 });
         assertThat(outContent).asString().contains("Cart Amount: " + shoppingCart.getCartAmountWithoutDiscount());
         shoppingCart.getDiscountMap().forEach((key, value) -> assertThat(outContent).asString().contains(key + ": " + value.getDiscountAmount()));
-        assertThat(outContent).asString().contains(productQuantityBasedMockDiscount.getDiscountName() + ": " + productQuantityBasedMockDiscount.getDiscountAmount());
+        assertThat(outContent).asString().contains(discount.getDiscountName() + ": " + discount.getDiscountAmount());
         assertThat(outContent).asString().contains("Total Discount Amount: " + shoppingCart.getTotalDiscount());
         assertThat(outContent).asString().contains("Total Cart Amount After Discount(s): " + shoppingCart.getCartAmount());
         assertThat(outContent).asString().contains("Delivery Cost: " + shoppingCart.getDeliveryCost());

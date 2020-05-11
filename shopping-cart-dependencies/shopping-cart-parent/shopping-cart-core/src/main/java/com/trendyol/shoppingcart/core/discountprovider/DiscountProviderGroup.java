@@ -9,11 +9,7 @@ import java.util.Set;
 
 public class DiscountProviderGroup implements DiscountProvider {
 
-    private final Set<DiscountProvider> childDiscountProviders;
-
-    public DiscountProviderGroup() {
-        this.childDiscountProviders = new LinkedHashSet<>();
-    }
+    private final Set<DiscountProvider> childDiscountProviders = new LinkedHashSet<>();
 
     @Override
     public void provideDiscount() {
@@ -35,12 +31,12 @@ public class DiscountProviderGroup implements DiscountProvider {
         childDiscountProviders.forEach(discountProcessor -> discountProcessor.notifyDiscountProviderEventListeners(discountProvidedEvent));
     }
 
-    public void addDiscountProvider(DiscountProvider discountProcessor) {
-        this.childDiscountProviders.add(discountProcessor);
+    public void addDiscountProvider(DiscountProvider discountProvider) {
+        this.childDiscountProviders.add(discountProvider);
     }
 
-    public void removeDiscountProvider(DiscountProvider discountProcessor) {
-        this.childDiscountProviders.remove(discountProcessor);
+    public void removeDiscountProvider(DiscountProvider discountProvider) {
+        this.childDiscountProviders.remove(discountProvider);
     }
 
     public Set<DiscountProvider> getChildDiscountProviders() {

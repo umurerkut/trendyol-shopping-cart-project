@@ -1,4 +1,4 @@
-package com.trendyol.shoppingcart.core.domain.discount;
+package com.trendyol.shoppingcart.client.mock.discount;
 
 import com.trendyol.shoppingcart.core.domain.Category;
 import com.trendyol.shoppingcart.core.domain.Product;
@@ -6,6 +6,7 @@ import com.trendyol.shoppingcart.core.domain.value.Amount;
 import com.trendyol.shoppingcart.core.domain.value.DiscountName;
 import com.trendyol.shoppingcart.core.domain.value.Title;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +20,7 @@ public class ProductTypeBasedMockDiscountTest {
         //given
         Product product = null;
         Amount discountAmount = Amount.valueOf(10D);
-        assertThat(product).isNull();
+        Assertions.assertThat(product).isNull();
 
         //when
         Throwable throwable = catchThrowable(() -> {
@@ -76,7 +77,7 @@ public class ProductTypeBasedMockDiscountTest {
         //given
         Product product = new Product(Title.valueOf("Product"), Amount.valueOf(10D), new Category(Title.valueOf("Category")));
         Amount discountAmount = Amount.valueOf(10D);
-        assertThat(product).isNotNull();
+        Assertions.assertThat(product).isNotNull();
         assertThat(discountAmount).isNotNull();
 
         //when

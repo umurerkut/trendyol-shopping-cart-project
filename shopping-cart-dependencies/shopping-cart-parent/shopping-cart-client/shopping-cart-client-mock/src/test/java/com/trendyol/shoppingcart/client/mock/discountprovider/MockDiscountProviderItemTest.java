@@ -1,9 +1,10 @@
-package com.trendyol.shoppingcart.core.discountprovider;
+package com.trendyol.shoppingcart.client.mock.discountprovider;
 
+import com.trendyol.shoppingcart.client.mock.discount.ProductQuantityBasedMockDiscount;
 import com.trendyol.shoppingcart.core.discountprovider.listener.DiscountProvidedEvent;
 import com.trendyol.shoppingcart.core.domain.ShoppingCart;
-import com.trendyol.shoppingcart.core.domain.discount.ProductQuantityBasedMockDiscount;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.*;
 
-public class MockDiscountProviderTest {
+public class MockDiscountProviderItemTest {
 
     @Test
     public void givenDiscount_whenDiscountIsNull_thenThrowInvalidValueException() {
@@ -24,7 +25,7 @@ public class MockDiscountProviderTest {
         //when
         assertThat(discount).isNull();
         Throwable throwable = catchThrowable(() -> {
-            MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount);
+            MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount);
         });
 
         //then
@@ -41,12 +42,12 @@ public class MockDiscountProviderTest {
         assertThat(discount).isNotNull();
 
         //when
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount);
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount);
 
         //then
-        assertThat(mockDiscountProvider).isNotNull();
-        assertThat(mockDiscountProvider.getDiscount()).isEqualTo(discount);
-        assertThat(mockDiscountProvider.getExpireTime()).isNull();
+        Assertions.assertThat(mockDiscountProviderItem).isNotNull();
+        Assertions.assertThat(mockDiscountProviderItem.getDiscount()).isEqualTo(discount);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNull();
     }
 
     @Test
@@ -58,12 +59,12 @@ public class MockDiscountProviderTest {
         assertThat(expireTime).isNotNull();
 
         //when
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount, expireTime);
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount, expireTime);
 
         //then
-        assertThat(mockDiscountProvider).isNotNull();
-        assertThat(mockDiscountProvider.getDiscount()).isEqualTo(discount);
-        assertThat(mockDiscountProvider.getExpireTime()).isNotNull().isEqualTo(expireTime);
+        Assertions.assertThat(mockDiscountProviderItem).isNotNull();
+        Assertions.assertThat(mockDiscountProviderItem.getDiscount()).isEqualTo(discount);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNotNull().isEqualTo(expireTime);
     }
 
     @Test
@@ -71,11 +72,11 @@ public class MockDiscountProviderTest {
         //given
         ProductQuantityBasedMockDiscount discount = mock(ProductQuantityBasedMockDiscount.class);
         assertThat(discount).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount);
-        assertThat(mockDiscountProvider.getExpireTime()).isNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNull();
 
         //when
-        boolean result = mockDiscountProvider.isValid();
+        boolean result = mockDiscountProviderItem.isValid();
 
         //then
         assertThat(result).isTrue();
@@ -88,11 +89,11 @@ public class MockDiscountProviderTest {
         assertThat(discount).isNotNull();
         Instant expireTime = Instant.now().plus(Duration.ofDays(10));
         assertThat(expireTime).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount, expireTime);
-        assertThat(mockDiscountProvider.getExpireTime()).isNotNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount, expireTime);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNotNull();
 
         //when
-        boolean result = mockDiscountProvider.isValid();
+        boolean result = mockDiscountProviderItem.isValid();
 
         //then
         assertThat(result).isTrue();
@@ -105,11 +106,11 @@ public class MockDiscountProviderTest {
         assertThat(discount).isNotNull();
         Instant expireTime = Instant.now().minus(Duration.ofDays(10));
         assertThat(expireTime).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount, expireTime);
-        assertThat(mockDiscountProvider.getExpireTime()).isNotNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount, expireTime);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNotNull();
 
         //when
-        boolean result = mockDiscountProvider.isValid();
+        boolean result = mockDiscountProviderItem.isValid();
 
         //then
         assertThat(result).isFalse();
@@ -120,16 +121,16 @@ public class MockDiscountProviderTest {
         //given
         ProductQuantityBasedMockDiscount discount = mock(ProductQuantityBasedMockDiscount.class);
         assertThat(discount).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount);
-        assertThat(mockDiscountProvider.getExpireTime()).isNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNull();
 
         //when
         ShoppingCart shoppingCart = mock(ShoppingCart.class);
-        mockDiscountProvider.registerDiscountProviderEventListener(shoppingCart);
+        mockDiscountProviderItem.registerDiscountProviderEventListener(shoppingCart);
 
         //then
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).hasSize(1);
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).contains(shoppingCart);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).hasSize(1);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).contains(shoppingCart);
     }
 
     @Test
@@ -137,18 +138,18 @@ public class MockDiscountProviderTest {
         //given
         ProductQuantityBasedMockDiscount discount = mock(ProductQuantityBasedMockDiscount.class);
         assertThat(discount).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount);
-        assertThat(mockDiscountProvider.getExpireTime()).isNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNull();
 
         ShoppingCart shoppingCart = mock(ShoppingCart.class);
-        mockDiscountProvider.registerDiscountProviderEventListener(shoppingCart);
+        mockDiscountProviderItem.registerDiscountProviderEventListener(shoppingCart);
 
         //when
-        mockDiscountProvider.unregisterDiscountProviderEventListener(shoppingCart);
+        mockDiscountProviderItem.unregisterDiscountProviderEventListener(shoppingCart);
 
         //then
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).hasSize(0);
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).doesNotContain(shoppingCart);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).hasSize(0);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).doesNotContain(shoppingCart);
     }
 
     @Test
@@ -156,19 +157,19 @@ public class MockDiscountProviderTest {
         //given
         ProductQuantityBasedMockDiscount discount = mock(ProductQuantityBasedMockDiscount.class);
         assertThat(discount).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount);
-        assertThat(mockDiscountProvider.getExpireTime()).isNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNull();
 
         ShoppingCart shoppingCart = mock(ShoppingCart.class);
-        mockDiscountProvider.registerDiscountProviderEventListener(shoppingCart);
+        mockDiscountProviderItem.registerDiscountProviderEventListener(shoppingCart);
 
         //when
         DiscountProvidedEvent event = mock(DiscountProvidedEvent.class);
-        mockDiscountProvider.notifyDiscountProviderEventListeners(event);
+        mockDiscountProviderItem.notifyDiscountProviderEventListeners(event);
 
         //then
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).hasSize(1);
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).contains(shoppingCart);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).hasSize(1);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).contains(shoppingCart);
         verify(shoppingCart, times(1)).discountProvided(ArgumentMatchers.eq(event));
     }
 
@@ -177,19 +178,19 @@ public class MockDiscountProviderTest {
         //given
         ProductQuantityBasedMockDiscount discount = mock(ProductQuantityBasedMockDiscount.class);
         assertThat(discount).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount);
-        assertThat(mockDiscountProvider.getExpireTime()).isNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNull();
 
         ShoppingCart shoppingCart = mock(ShoppingCart.class);
-        mockDiscountProvider.registerDiscountProviderEventListener(shoppingCart);
+        mockDiscountProviderItem.registerDiscountProviderEventListener(shoppingCart);
 
         //when
-        assertThat(mockDiscountProvider.isValid()).isTrue();
-        mockDiscountProvider.provideDiscount();
+        Assertions.assertThat(mockDiscountProviderItem.isValid()).isTrue();
+        mockDiscountProviderItem.provideDiscount();
 
         //then
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).hasSize(1);
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).contains(shoppingCart);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).hasSize(1);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).contains(shoppingCart);
         verify(shoppingCart, times(1)).discountProvided(ArgumentMatchers.any(DiscountProvidedEvent.class));
     }
 
@@ -200,19 +201,19 @@ public class MockDiscountProviderTest {
         assertThat(discount).isNotNull();
         Instant expireTime = Instant.now().minus(Duration.ofDays(10));
         assertThat(expireTime).isNotNull();
-        MockDiscountProvider mockDiscountProvider = new MockDiscountProvider(discount, expireTime);
-        assertThat(mockDiscountProvider.getExpireTime()).isNotNull();
+        MockDiscountProviderItem mockDiscountProviderItem = new MockDiscountProviderItem(discount, expireTime);
+        Assertions.assertThat(mockDiscountProviderItem.getExpireTime()).isNotNull();
 
         ShoppingCart shoppingCart = mock(ShoppingCart.class);
-        mockDiscountProvider.registerDiscountProviderEventListener(shoppingCart);
+        mockDiscountProviderItem.registerDiscountProviderEventListener(shoppingCart);
 
         //when
-        assertThat(mockDiscountProvider.isValid()).isFalse();
-        mockDiscountProvider.provideDiscount();
+        Assertions.assertThat(mockDiscountProviderItem.isValid()).isFalse();
+        mockDiscountProviderItem.provideDiscount();
 
         //then
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).hasSize(1);
-        assertThat(mockDiscountProvider.getDiscountProviderEventListenerList()).contains(shoppingCart);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).hasSize(1);
+        Assertions.assertThat(mockDiscountProviderItem.getDiscountProviderEventListenerList()).contains(shoppingCart);
         verify(shoppingCart, never()).discountProvided(ArgumentMatchers.any(DiscountProvidedEvent.class));
     }
 

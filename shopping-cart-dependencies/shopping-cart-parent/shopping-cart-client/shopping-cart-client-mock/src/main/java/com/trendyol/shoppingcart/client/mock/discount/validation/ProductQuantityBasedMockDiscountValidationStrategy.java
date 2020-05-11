@@ -1,6 +1,7 @@
-package com.trendyol.shoppingcart.core.domain.discount.validation;
+package com.trendyol.shoppingcart.client.mock.discount.validation;
 
 import com.trendyol.shoppingcart.core.domain.ShoppingCart;
+import com.trendyol.shoppingcart.core.domain.discount.validation.DiscountValidationStrategy;
 import com.trendyol.shoppingcart.core.domain.value.Quantity;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 

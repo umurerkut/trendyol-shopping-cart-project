@@ -15,20 +15,21 @@ import java.util.stream.Collectors;
 public final class ShoppingCart implements DiscountProviderEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ShoppingCart.class);
-    private final Set<CartItem> cartItems = new LinkedHashSet<>();
-    private final Map<DiscountName, Discount> discountMap = new LinkedHashMap<>();
+    private final Set<CartItem> cartItems;
+    private final Map<DiscountName, Discount> discountMap;
     private Long id;
     private Amount cartAmount;
     private Amount totalDiscount;
     private Amount deliveryCost;
     private Amount totalAmount;
 
-
     public ShoppingCart() {
         this.cartAmount = Amount.ofZero();
         this.totalDiscount = Amount.ofZero();
         this.deliveryCost = Amount.ofZero();
         this.totalAmount = Amount.ofZero();
+        this.cartItems = new LinkedHashSet<>();
+        this.discountMap = new LinkedHashMap<>();
     }
 
     public void addProduct(Product product, Quantity quantity) {

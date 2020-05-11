@@ -1,8 +1,9 @@
-package com.trendyol.shoppingcart.core.domain.discount;
+package com.trendyol.shoppingcart.client.mock.discount;
 
+import com.trendyol.shoppingcart.client.mock.discount.calculation.MockDiscountCalculationStrategy;
+import com.trendyol.shoppingcart.client.mock.discount.validation.ProductTypeBasedMockDiscountValidationStrategy;
 import com.trendyol.shoppingcart.core.domain.Product;
-import com.trendyol.shoppingcart.core.domain.discount.calculation.MockDiscountCalculationStrategy;
-import com.trendyol.shoppingcart.core.domain.discount.validation.ProductTypeBasedMockDiscountValidationStrategy;
+import com.trendyol.shoppingcart.core.domain.discount.Discount;
 import com.trendyol.shoppingcart.core.domain.value.Amount;
 import com.trendyol.shoppingcart.core.domain.value.DiscountName;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
@@ -20,27 +21,15 @@ public class ProductTypeBasedMockDiscount extends Discount {
         if (product == null) {
             throw new InvalidValueException("Given product can not be null");
         }
-        String discountNameText = (product.getTitle().getValue() + "_PRODUCT_TYPE_BASED_MOCK_DISCOUNT").replaceAll(" ", "_").toUpperCase();
+        String discountNameText = (product.getTitle().getValue() + "_PRODUCT_TYPE_BASED_MOCK_DISCOUNT").replace(" ", "_").toUpperCase();
         return DiscountName.valueOf(discountNameText);
     }
 
     private static ProductTypeBasedMockDiscountValidationStrategy validationStrategy(Product product) {
-        if (product == null) {
-            throw new InvalidValueException("Given product can not be null");
-        }
         return new ProductTypeBasedMockDiscountValidationStrategy(product);
     }
 
     private static MockDiscountCalculationStrategy calculationStrategy(Amount discountAmount) {
-        if (discountAmount == null) {
-            throw new InvalidValueException("Amount of discount to be applied can not be null!");
-        }
-        if (discountAmount.isZero()) {
-            throw new InvalidValueException("Amount of discount to be applied can not be zero!");
-        }
-        if (discountAmount.isNegative()) {
-            throw new InvalidValueException("Amount of discount to be applied can not be negative!");
-        }
         return new MockDiscountCalculationStrategy(discountAmount);
     }
 
