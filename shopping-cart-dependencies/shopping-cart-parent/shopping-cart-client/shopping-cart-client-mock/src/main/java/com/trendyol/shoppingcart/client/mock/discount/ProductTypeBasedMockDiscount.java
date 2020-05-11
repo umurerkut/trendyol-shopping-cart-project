@@ -1,9 +1,9 @@
 package com.trendyol.shoppingcart.client.mock.discount;
 
-import com.trendyol.shoppingcart.client.mock.discount.calculation.MockDiscountCalculationStrategy;
 import com.trendyol.shoppingcart.client.mock.discount.validation.ProductTypeBasedMockDiscountValidationStrategy;
 import com.trendyol.shoppingcart.core.domain.Product;
 import com.trendyol.shoppingcart.core.domain.discount.Discount;
+import com.trendyol.shoppingcart.core.domain.discount.calculation.AmountDiscountStrategy;
 import com.trendyol.shoppingcart.core.domain.value.Amount;
 import com.trendyol.shoppingcart.core.domain.value.DiscountName;
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
@@ -19,7 +19,7 @@ public class ProductTypeBasedMockDiscount extends Discount {
 
     private static DiscountName discountName(Product product) {
         if (product == null) {
-            throw new InvalidValueException("Given product can not be null");
+            throw new InvalidValueException("Given product can not be null!");
         }
         String discountNameText = (product.getTitle().getValue() + "_PRODUCT_TYPE_BASED_MOCK_DISCOUNT").replace(" ", "_").toUpperCase();
         return DiscountName.valueOf(discountNameText);
@@ -29,13 +29,13 @@ public class ProductTypeBasedMockDiscount extends Discount {
         return new ProductTypeBasedMockDiscountValidationStrategy(product);
     }
 
-    private static MockDiscountCalculationStrategy calculationStrategy(Amount discountAmount) {
-        return new MockDiscountCalculationStrategy(discountAmount);
+    private static AmountDiscountStrategy calculationStrategy(Amount discountAmount) {
+        return new AmountDiscountStrategy(discountAmount);
     }
 
     @Override
-    public MockDiscountCalculationStrategy getCalculationStrategy() {
-        return (MockDiscountCalculationStrategy) super.getCalculationStrategy();
+    public AmountDiscountStrategy getCalculationStrategy() {
+        return (AmountDiscountStrategy) super.getCalculationStrategy();
     }
 
     @Override
@@ -48,10 +48,15 @@ public class ProductTypeBasedMockDiscount extends Discount {
         if (other == null) {
             return true;
         }
+
+        if (!(other instanceof ProductTypeBasedMockDiscount)) {
+            return true;
+        }
+
         ProductTypeBasedMockDiscount productQuantityBasedMockDiscount = (ProductTypeBasedMockDiscount) other;
 
-        Comparator<MockDiscountCalculationStrategy> calculationComparator = Comparator
-                .comparing(MockDiscountCalculationStrategy::getDiscountAmount);
+        Comparator<AmountDiscountStrategy> calculationComparator = Comparator
+                .comparing(AmountDiscountStrategy::getDiscountAmount);
 
         return Comparator
                 .comparing(ProductTypeBasedMockDiscount::getCalculationStrategy, calculationComparator)

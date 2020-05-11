@@ -1,4 +1,4 @@
-package com.trendyol.shoppingcart.client.mock.discount.calculation;
+package com.trendyol.shoppingcart.core.domain.discount.calculation;
 
 import com.trendyol.shoppingcart.core.domain.ShoppingCart;
 import com.trendyol.shoppingcart.core.domain.value.Amount;
@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class MockDiscountCalculationStrategyTest {
+public class AmountDiscountStrategyTest {
 
     @Test
     public void givenDiscountAmount_whenDiscountAmountIsNull_thenThrowInvalidValueException() {
@@ -20,7 +20,7 @@ public class MockDiscountCalculationStrategyTest {
 
         //when
         Throwable throwable = catchThrowable(() -> {
-            MockDiscountCalculationStrategy calculationStrategy = new MockDiscountCalculationStrategy(discountAmount);
+            AmountDiscountStrategy calculationStrategy = new AmountDiscountStrategy(discountAmount);
         });
 
         //then
@@ -38,7 +38,7 @@ public class MockDiscountCalculationStrategyTest {
 
         //when
         Throwable throwable = catchThrowable(() -> {
-            MockDiscountCalculationStrategy calculationStrategy = new MockDiscountCalculationStrategy(discountAmount);
+            AmountDiscountStrategy calculationStrategy = new AmountDiscountStrategy(discountAmount);
         });
 
         //then
@@ -49,13 +49,13 @@ public class MockDiscountCalculationStrategyTest {
     }
 
     @Test
-    public void givenValidDiscountAmount_whenCreateMockDiscountCalculationStrategy_thenReturnMockDiscountCalculationStrategy() {
+    public void givenValidDiscountAmount_whenCreateAmountDiscountStrategy_thenReturnAmountDiscountStrategy() {
         //given
         Amount discountAmount = Amount.valueOf(10D);
         assertThat(discountAmount).isNotNull();
 
         //when
-        MockDiscountCalculationStrategy calculationStrategy = new MockDiscountCalculationStrategy(discountAmount);
+        AmountDiscountStrategy calculationStrategy = new AmountDiscountStrategy(discountAmount);
 
         //then
         assertThat(calculationStrategy).isNotNull();
@@ -70,7 +70,7 @@ public class MockDiscountCalculationStrategyTest {
 
         //when
         Throwable throwable = catchThrowable(() -> {
-            MockDiscountCalculationStrategy calculationStrategy = new MockDiscountCalculationStrategy(discountAmount);
+            AmountDiscountStrategy calculationStrategy = new AmountDiscountStrategy(discountAmount);
         });
 
         //then
@@ -81,11 +81,11 @@ public class MockDiscountCalculationStrategyTest {
     }
 
     @Test
-    public void givenMockDiscountCalculationStrategy_whenCalculateDiscountAmount_thenReturnCalculatedDiscountAmount() {
+    public void givenAmountDiscountStrategy_whenCalculateDiscountAmount_thenReturnCalculatedDiscountAmount() {
         //given
         Amount discountAmount = Amount.valueOf(10D);
         assertThat(discountAmount).isNotNull();
-        MockDiscountCalculationStrategy calculationStrategy = new MockDiscountCalculationStrategy(discountAmount);
+        AmountDiscountStrategy calculationStrategy = new AmountDiscountStrategy(discountAmount);
 
         //when
         ShoppingCart shoppingCart = mock(ShoppingCart.class);

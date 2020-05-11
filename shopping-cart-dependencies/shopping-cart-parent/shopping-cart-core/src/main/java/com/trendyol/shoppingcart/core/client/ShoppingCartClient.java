@@ -38,6 +38,7 @@ public abstract class ShoppingCartClient {
         shoppingCart.applyDiscounts();
         if (deliveryCostService != null) {
             shoppingCart.setDeliveryCost(deliveryCostService.calculateFor(shoppingCart));
+            shoppingCart.applyDeliveryCost();
         }
         ShoppingCart savedShoppingCart = shoppingCartService.save(shoppingCart);
         savedShoppingCart.print();

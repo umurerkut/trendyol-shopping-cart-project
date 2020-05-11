@@ -118,6 +118,17 @@ public final class ShoppingCart implements DiscountProviderEventListener {
                 .orElse(Quantity.ofZero());
     }
 
+    public Quantity getQuantityOfProductsBelongsToCategoryInCart(Category category) {
+        return Quantity.valueOf(cartItems.stream()
+                .filter(cartItem -> category.equals(cartItem.getCategory()))
+                .mapToInt(cartItem -> cartItem.getQuantity().intValue())
+                .sum());
+    }
+
+    public Amount getTotalPriceOfProductsBelongToCategoryInCart(Category category) {
+        return Amount.valueOf(cartItems.stream().filter(cartItem -> cartItem.getCategory().equals(category)).mapToDouble(cartItem -> cartItem.getTotalPrice().doubleValue()).sum());
+    }
+
     public Quantity getTotalQuantityOfProductsInCart() {
         return Quantity.valueOf(cartItems.stream().mapToInt(cartItem -> cartItem.getQuantity().intValue()).sum());
 

@@ -30,4 +30,24 @@ public class ProductQuantityBasedMockDiscountValidationStrategy implements Disco
     public Quantity getMinimumQuantityOfProducts() {
         return minimumQuantityOfProducts;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductQuantityBasedMockDiscountValidationStrategy that = (ProductQuantityBasedMockDiscountValidationStrategy) o;
+
+        return minimumQuantityOfProducts.equals(that.minimumQuantityOfProducts);
+    }
+
+    @Override
+    public int hashCode() {
+        return minimumQuantityOfProducts.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "MinimumQuantityOfProducts=" + minimumQuantityOfProducts;
+    }
 }

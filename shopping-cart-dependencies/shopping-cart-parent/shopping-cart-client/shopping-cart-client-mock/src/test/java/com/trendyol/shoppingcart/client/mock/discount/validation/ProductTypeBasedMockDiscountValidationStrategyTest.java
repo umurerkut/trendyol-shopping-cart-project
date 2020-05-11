@@ -31,7 +31,7 @@ public class ProductTypeBasedMockDiscountValidationStrategyTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(InvalidValueException.class)
-                .hasMessage("Given product can not be null");
+                .hasMessage("Given product can not be null!");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ProductTypeBasedMockDiscountValidationStrategyTest {
     }
 
     @Test
-    public void givenProductTypeBasedMockDiscountValidationStrategywhenIsNotValid_thenReturnFalse() {
+    public void givenProductTypeBasedMockDiscountValidationStrategy_whenIsNotValid_thenReturnFalse() {
         //given
         Product product = new Product(Title.valueOf("Product"), Amount.valueOf(10D), new Category(Title.valueOf("Category")));
         assertThat(product).isNotNull();

@@ -15,11 +15,11 @@ public final class DiscountName implements Comparable<DiscountName> {
     private DiscountName(String value) {
 
         if (value == null) {
-            throw new InvalidValueException("Discount name value can not be null.");
+            throw new InvalidValueException("Discount name value can not be null!");
         }
 
         if ("".equals(value)) {
-            throw new InvalidValueException("Discount name value can not be blank.");
+            throw new InvalidValueException("Discount name value can not be blank!");
         }
 
         this.value = value;

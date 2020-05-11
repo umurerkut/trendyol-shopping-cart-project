@@ -12,7 +12,7 @@ public class ProductTypeBasedMockDiscountValidationStrategy implements DiscountV
 
     public ProductTypeBasedMockDiscountValidationStrategy(Product product) {
         if (product == null) {
-            throw new InvalidValueException("Given product can not be null");
+            throw new InvalidValueException("Given product can not be null!");
         }
         this.product = product;
     }
@@ -25,5 +25,25 @@ public class ProductTypeBasedMockDiscountValidationStrategy implements DiscountV
 
     public Product getProduct() {
         return product;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductTypeBasedMockDiscountValidationStrategy that = (ProductTypeBasedMockDiscountValidationStrategy) o;
+
+        return product.equals(that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return product.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Product=" + product;
     }
 }

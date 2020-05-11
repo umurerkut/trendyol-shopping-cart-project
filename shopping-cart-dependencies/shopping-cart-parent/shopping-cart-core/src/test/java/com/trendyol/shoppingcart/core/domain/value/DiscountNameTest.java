@@ -23,7 +23,7 @@ public class DiscountNameTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(InvalidValueException.class)
-                .hasMessage("Discount name value can not be null.");
+                .hasMessage("Discount name value can not be null!");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class DiscountNameTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(InvalidValueException.class)
-                .hasMessage("Discount name value can not be blank.");
+                .hasMessage("Discount name value can not be blank!");
     }
 
     @Test

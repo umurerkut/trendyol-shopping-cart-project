@@ -1,4 +1,4 @@
-package com.trendyol.shoppingcart.core.domain.value;
+package com.trendyol.shoppingcart.client.trendyol.domain.value;
 
 import com.trendyol.shoppingcart.core.exception.InvalidValueException;
 

@@ -23,7 +23,7 @@ public class TitleTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(InvalidValueException.class)
-                .hasMessage("Title value can not be null.");
+                .hasMessage("Title value can not be null!");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class TitleTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(InvalidValueException.class)
-                .hasMessage("Title value can not be blank.");
+                .hasMessage("Title value can not be blank!");
     }
 
     @Test

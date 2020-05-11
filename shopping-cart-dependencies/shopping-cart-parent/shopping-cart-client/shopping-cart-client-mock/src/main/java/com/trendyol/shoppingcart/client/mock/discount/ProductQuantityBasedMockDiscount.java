@@ -1,8 +1,8 @@
 package com.trendyol.shoppingcart.client.mock.discount;
 
-import com.trendyol.shoppingcart.client.mock.discount.calculation.MockDiscountCalculationStrategy;
 import com.trendyol.shoppingcart.client.mock.discount.validation.ProductQuantityBasedMockDiscountValidationStrategy;
 import com.trendyol.shoppingcart.core.domain.discount.Discount;
+import com.trendyol.shoppingcart.core.domain.discount.calculation.AmountDiscountStrategy;
 import com.trendyol.shoppingcart.core.domain.value.Amount;
 import com.trendyol.shoppingcart.core.domain.value.DiscountName;
 import com.trendyol.shoppingcart.core.domain.value.Quantity;
@@ -24,13 +24,13 @@ public class ProductQuantityBasedMockDiscount extends Discount {
         return new ProductQuantityBasedMockDiscountValidationStrategy(minimumQuantityOfProducts);
     }
 
-    private static MockDiscountCalculationStrategy calculationStrategy(Amount discountAmount) {
-        return new MockDiscountCalculationStrategy(discountAmount);
+    private static AmountDiscountStrategy calculationStrategy(Amount discountAmount) {
+        return new AmountDiscountStrategy(discountAmount);
     }
 
     @Override
-    public MockDiscountCalculationStrategy getCalculationStrategy() {
-        return (MockDiscountCalculationStrategy) super.getCalculationStrategy();
+    public AmountDiscountStrategy getCalculationStrategy() {
+        return (AmountDiscountStrategy) super.getCalculationStrategy();
     }
 
     @Override
@@ -43,13 +43,18 @@ public class ProductQuantityBasedMockDiscount extends Discount {
         if (other == null) {
             return true;
         }
+
+        if (!(other instanceof ProductQuantityBasedMockDiscount)) {
+            return true;
+        }
+
         ProductQuantityBasedMockDiscount productQuantityBasedMockDiscount = (ProductQuantityBasedMockDiscount) other;
 
         Comparator<ProductQuantityBasedMockDiscountValidationStrategy> validationComparator = Comparator
                 .comparing(ProductQuantityBasedMockDiscountValidationStrategy::getMinimumQuantityOfProducts);
 
-        Comparator<MockDiscountCalculationStrategy> calculationComparator = Comparator
-                .comparing(MockDiscountCalculationStrategy::getDiscountAmount);
+        Comparator<AmountDiscountStrategy> calculationComparator = Comparator
+                .comparing(AmountDiscountStrategy::getDiscountAmount);
 
         return Comparator.comparing(ProductQuantityBasedMockDiscount::getValidationStrategy, validationComparator)
                 .thenComparing(ProductQuantityBasedMockDiscount::getCalculationStrategy, calculationComparator)

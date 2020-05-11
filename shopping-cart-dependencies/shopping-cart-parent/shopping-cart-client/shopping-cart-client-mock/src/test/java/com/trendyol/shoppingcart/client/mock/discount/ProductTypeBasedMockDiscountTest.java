@@ -31,7 +31,7 @@ public class ProductTypeBasedMockDiscountTest {
         assertThat(throwable)
                 .isNotNull()
                 .isInstanceOf(InvalidValueException.class)
-                .hasMessage("Given product can not be null");
+                .hasMessage("Given product can not be null!");
     }
 
     @Test

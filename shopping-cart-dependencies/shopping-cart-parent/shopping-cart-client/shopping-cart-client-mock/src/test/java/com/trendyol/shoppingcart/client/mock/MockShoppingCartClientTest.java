@@ -23,16 +23,14 @@ import static org.mockito.Mockito.*;
 
 public class MockShoppingCartClientTest {
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-
-    private MockShoppingCartClient mockShoppingCartClient;
-    private ShoppingCart shoppingCart;
-
     private static final Category food = food();
     private static final Product apple = apple();
     private static final Product pear = pear();
     private static final Product banana = banana();
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private MockShoppingCartClient mockShoppingCartClient;
+    private ShoppingCart shoppingCart;
 
     private static Category food() {
         return new Category(Title.valueOf("FOOD"));
@@ -63,26 +61,6 @@ public class MockShoppingCartClientTest {
         when(shoppingCartService.save(any(ShoppingCart.class))).thenReturn(shoppingCart);
 
         this.mockShoppingCartClient = new MockShoppingCartClient(shoppingCartService, productService);
-    }
-
-    @Test
-    public void givenShoppingCartClient_whenClientCreated_thenAnyAppleExistsThenApplyAmountOf2DiscountShouldBeRegistered() {
-
-    }
-
-    @Test
-    public void givenShoppingCartClient_whenClientCreated_thenAnyBananaExistsThenApplyAmountOf5DiscountShouldBeRegistered() {
-
-    }
-
-    @Test
-    public void givenShoppingCartClient_whenClientCreated_ProductQuantityGreaterEquals5ThenApplyDiscountAmountOf10DiscountShouldBeRegistered() {
-
-    }
-
-    @Test
-    public void givenShoppingCartClient_whenClientCreated_ProductQuantityGreaterEquals10ThenApplyDiscountAmountOf15DiscountShouldBeRegistered() {
-
     }
 
     @Test
@@ -385,20 +363,5 @@ public class MockShoppingCartClientTest {
 
 
         System.setOut(originalOut);
-    }
-
-    @Test
-    public void givenShoppingCartClient_whenSubmitCart_thenAlwaysProvideProductTypeBasedDiscountsFirst() {
-        //given
-        shoppingCart.addProduct(apple, Quantity.valueOf(3));
-        shoppingCart.addProduct(pear, Quantity.valueOf(2));
-        shoppingCart.addProduct(banana, Quantity.valueOf(1));
-
-        //when
-        mockShoppingCartClient.submitCart(shoppingCart);
-        //AnyAppleExistsThenApplyAmountOf2, AnyBananaExistsThenApplyAmountOf5 and ProductQuantityGreaterEquals5ThenApplyDiscountAmountOf10 discounts should be applied to shopping cart
-
-        //then
-
     }
 }

@@ -15,11 +15,11 @@ public final class Title implements Comparable<Title> {
     private Title(String value) {
 
         if (value == null) {
-            throw new InvalidValueException("Title value can not be null.");
+            throw new InvalidValueException("Title value can not be null!");
         }
 
         if ("".equals(value)) {
-            throw new InvalidValueException("Title value can not be blank.");
+            throw new InvalidValueException("Title value can not be blank!");
         }
 
         this.value = value;
