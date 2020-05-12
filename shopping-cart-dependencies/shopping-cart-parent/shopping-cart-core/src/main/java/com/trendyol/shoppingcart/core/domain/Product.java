@@ -79,9 +79,10 @@ public final class Product implements Comparable<Product> {
 
     @Override
     public int compareTo(Product o) {
-        return Comparator.comparing(Product::getCategory).
-                thenComparing(Product::getPrice)
-                .thenComparing(Product::getTitle).compare(this, o);
+        return Comparator
+                .comparing(Product::getTitle)
+                .thenComparing(Product::getPrice)
+                .compare(this, o);
     }
 }
 

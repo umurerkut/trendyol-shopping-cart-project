@@ -235,24 +235,6 @@ public class ProductTest {
     }
 
     @Test
-    public void givenSameTitlesSamePricesProduct1CategoryLessThanProduct2Category_whenCompareProducts_thenReturnNegative() {
-        //given
-        Title title1 = Title.valueOf("Product 1");
-        Title title2 = Title.valueOf("Product 1");
-        Amount price1 = Amount.valueOf(10D);
-        Amount price2 = Amount.valueOf(10D);
-        Category category1 = new Category(Title.valueOf("Category 1"));
-        Category category2 = new Category(Title.valueOf("Category 2"));
-
-        //when
-        Product product1 = new Product(title1, price1, category1);
-        Product product2 = new Product(title2, price2, category2);
-
-        //then
-        assertThat(product1).isLessThan(product2);
-    }
-
-    @Test
     public void givenSameTitlesSameCategoriesProduct1PriceLessThanProduct2Price_whenCompareProducts_thenReturnNegative() {
         //given
         Title title1 = Title.valueOf("Product 1");

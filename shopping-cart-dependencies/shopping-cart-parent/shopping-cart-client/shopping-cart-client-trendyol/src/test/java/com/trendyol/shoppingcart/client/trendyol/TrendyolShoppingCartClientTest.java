@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class TrendyolShoppingCartClientTest {
         when(categoryService.get(Title.valueOf("BEVERAGE"))).thenReturn(Optional.of(beverage));
         when(categoryService.get(Title.valueOf("ALCOHOLIC_BEVERAGE"))).thenReturn(Optional.of(alcoholicBeverage));
         when(categoryService.get(Title.valueOf("NONALCOHOLIC_BEVERAGE"))).thenReturn(Optional.of(nonalcoholicBeverage));
+        when(categoryService.getChildrenOf(Title.valueOf("BEVERAGE"))).thenReturn(Arrays.asList(alcoholicBeverage, nonalcoholicBeverage));
 
         this.productService = mock(ProductService.class);
         when(productService.get(Title.valueOf("APPLE"))).thenReturn(Optional.of(apple));
@@ -542,7 +544,6 @@ public class TrendyolShoppingCartClientTest {
         assertShoppingCartConsoleOutput();
     }
 
-
     @Test
     public void givenCampaign3_whenSubmitCart_thenApplyDiscountAmount() {
         //given
@@ -571,8 +572,8 @@ public class TrendyolShoppingCartClientTest {
         assertThat(shoppingCart.getTotalDiscount()).isEqualTo(Amount.valueOf(2.2D));
         assertThat(shoppingCart.getCartAmount()).isEqualTo(Amount.valueOf(19.8D));
         assertThat(shoppingCart.getCartAmount()).isNotEqualTo(shoppingCart.getCartAmountWithoutDiscount());
-        assertThat(shoppingCart.getDeliveryCost()).isEqualTo(Amount.valueOf(5.99D));
-        assertThat(shoppingCart.getTotalAmount()).isEqualTo(Amount.valueOf(100.99D));
+        assertThat(shoppingCart.getDeliveryCost()).isEqualTo(Amount.valueOf(8.99D));
+        assertThat(shoppingCart.getTotalAmount()).isEqualTo(Amount.valueOf(28.79D));
         assertShoppingCartConsoleOutput();
     }
 

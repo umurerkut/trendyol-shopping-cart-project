@@ -20,8 +20,7 @@ public class RateDiscountStrategy implements DiscountCalculationStrategy {
 
     @Override
     public Amount calculateDiscountAmount(ShoppingCart shoppingCart) {
-        double roundedValue = Math.round(shoppingCart.getCartAmount().multiply(discountRate.doubleValue()).divide(100D).doubleValue());
-        return Amount.valueOf(roundedValue);
+        return Amount.valueOf(shoppingCart.getCartAmount().multiply(discountRate.doubleValue()).divide(100D).doubleValue());
 
     }
 

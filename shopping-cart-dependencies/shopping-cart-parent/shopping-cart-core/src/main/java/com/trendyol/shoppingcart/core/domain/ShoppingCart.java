@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public final class ShoppingCart implements DiscountProviderEventListener {
@@ -119,14 +120,26 @@ public final class ShoppingCart implements DiscountProviderEventListener {
     }
 
     public Quantity getQuantityOfProductsBelongsToCategoryInCart(Category category) {
-        return Quantity.valueOf(cartItems.stream()
-                .filter(cartItem -> category.equals(cartItem.getCategory()))
-                .mapToInt(cartItem -> cartItem.getQuantity().intValue())
-                .sum());
+        AtomicInteger sum = new AtomicInteger(0);
+        category.descendants().forEach(c -> {
+            int quantity = cartItems.stream().filter(cartItem -> c.equals(cartItem.getCategory()))
+                    .mapToInt(cartItem -> cartItem.getQuantity().intValue())
+                    .sum();
+            sum.addAndGet(quantity);
+        });
+        return Quantity.valueOf(sum.get());
+
     }
 
     public Amount getTotalPriceOfProductsBelongToCategoryInCart(Category category) {
-        return Amount.valueOf(cartItems.stream().filter(cartItem -> cartItem.getCategory().equals(category)).mapToDouble(cartItem -> cartItem.getTotalPrice().doubleValue()).sum());
+        AtomicInteger sum = new AtomicInteger(0);
+        category.descendants().forEach(c -> {
+            double quantity = cartItems.stream().filter(cartItem -> c.equals(cartItem.getCategory()))
+                    .mapToDouble(cartItem -> cartItem.getTotalPrice().doubleValue())
+                    .sum();
+            sum.addAndGet((int) quantity);
+        });
+        return Amount.valueOf(sum.doubleValue());
     }
 
     public Quantity getTotalQuantityOfProductsInCart() {

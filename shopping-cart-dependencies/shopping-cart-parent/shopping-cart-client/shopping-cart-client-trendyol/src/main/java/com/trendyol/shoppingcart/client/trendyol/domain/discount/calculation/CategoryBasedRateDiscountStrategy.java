@@ -23,8 +23,7 @@ public class CategoryBasedRateDiscountStrategy extends RateDiscountStrategy {
     @Override
     public Amount calculateDiscountAmount(ShoppingCart shoppingCart) {
         Amount categoryProductTotalPrice = shoppingCart.getTotalPriceOfProductsBelongToCategoryInCart(category);
-        double roundedValue = Math.round(categoryProductTotalPrice.multiply(discountRate.doubleValue()).divide(100D).doubleValue());
-        return Amount.valueOf(roundedValue);
+        return Amount.valueOf(categoryProductTotalPrice.multiply(discountRate.doubleValue()).divide(100D).doubleValue());
     }
 
     @Override
